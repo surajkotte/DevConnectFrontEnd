@@ -5,6 +5,7 @@ import Globe from "../Utils/Globe";
 //import { Globe } from "lucide-react";
 import Particle from "../Utils/particles";
 import { useNavigate } from "react-router-dom";
+import { addToast } from "../reduxSlice/ToastSlice";
 
 const Login = () => {
   const [mail, setMail] = useState("");
@@ -30,20 +31,17 @@ const Login = () => {
       const responseData = await res.json();
       console.log(responseData.status);
       if (responseData["messageType"] == "E") {
-        setErrorMsg(responseData?.message);
-        setTimeout(() => {
-          setErrorMsg("");
-        }, 2000);
+        dispatch(
+          addToast({ message: responseData?.message, messageType: "E" })
+        );
       } else if (responseData["messageType"] == "S") {
-        dispatch(addUserData(responseData?.data));
-        console.log("here");
+        dispatch(
+          addToast({ message: responseData?.message, messageType: "S" })
+        );
         navigate("/dashboard");
       }
     } catch (err) {
-      setErrorMsg(err.message);
-      setTimeout(() => {
-        setErrorMsg("");
-      }, 2000);
+      dispatch(addToast({ message: responseData?.message, messageType: "E" }));
     }
   };
 
@@ -113,16 +111,8 @@ const Login = () => {
             </div>
           </div>
         </div>
-
         {/* <Globe /> */}
       </div>
-      {errorMsg && (
-        <div className="toast toast-top toast-end">
-          <div className="alert alert-error	">
-            <span>{errorMsg}</span>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

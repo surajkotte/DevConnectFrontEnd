@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import userStore from "../Redux/store";
 import { clearUserData } from "../reduxSlice/userSlice";
 import { useNavigate } from "react-router-dom";
+import { addToast } from "../reduxSlice/ToastSlice";
 const NavBar = () => {
   const navigate = useNavigate();
   const store = useSelector((store) => store.user);
@@ -15,10 +16,12 @@ const NavBar = () => {
     const data = await res.json();
     if (res.status == 200) {
       dispatch(clearUserData());
+      dispatch(addToast({ message: data?.message, messageType: "S" }));
       navigate("/login");
+    } else {
+      dispatch(addToast({ message: data?.message, messageType: "E" }));
     }
   };
-  console.log(store);
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1">

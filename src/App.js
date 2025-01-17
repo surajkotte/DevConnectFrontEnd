@@ -20,6 +20,7 @@ import Login from "./components/Login";
 import "./index.css";
 import { addUserData } from "./reduxSlice/userSlice";
 import Loader from "./Utils/loader";
+import Toast from "./Utils/Toast";
 
 const App = () => {
   return (
@@ -64,6 +65,8 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 // root.render(<App/>);
 root.render(
   <Provider store={Store}>
-    <RouterProvider router={routers} />
+    <Toast>
+      <RouterProvider router={routers} />
+    </Toast>
   </Provider>
 );

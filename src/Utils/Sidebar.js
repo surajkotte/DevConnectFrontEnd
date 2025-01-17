@@ -27,8 +27,8 @@ const Sidebar = ({ children }) => {
   ];
   const user = useSelector((store) => store.user);
   return (
-    <div className="flex h-screen items-center">
-      <div className="ml-2 flex flex-col h-1/2 border-[1px] w-[70px] rounded-3xl justify-center items-center gap-9">
+    <div className="flex h-full items-center">
+      <div className="ml-2 flex flex-col h-2/5 border-[1px] w-[60px] rounded-3xl justify-center items-center gap-6">
         {icons.map((iconinfo) => {
           console.log(iconinfo);
           return (
