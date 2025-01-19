@@ -15,6 +15,8 @@ const Profile = () => {
     "about",
     "skills",
     "gender",
+    "company",
+    "designation",
   ];
   const handleSaveClick = async () => {
     const userData = profileInfo;
@@ -188,7 +190,38 @@ const Profile = () => {
                 }}
               />
             </label>
-
+            <label className="form-control w-[44%]">
+              <div className="label">
+                <span className="label-text">Company</span>
+              </div>
+              <input
+                type="text"
+                placeholder="Type here"
+                className="input input-bordered input-accent w-full"
+                value={profileInfo?.company}
+                onChange={(e) => {
+                  setProfileInfo((existingData) => {
+                    return { ...existingData, company: e.target.value };
+                  });
+                }}
+              />
+            </label>
+            <label className="form-control w-[44%]">
+              <div className="label">
+                <span className="label-text">Designation</span>
+              </div>
+              <input
+                type="text"
+                placeholder="Type here"
+                className="input input-bordered input-accent w-full"
+                value={profileInfo?.designation}
+                onChange={(e) => {
+                  setProfileInfo((existingData) => {
+                    return { ...existingData, designation: e.target.value };
+                  });
+                }}
+              />
+            </label>
             <label className="form-control w-[90%]">
               <div className="label">
                 <span className="label-text">About</span>
