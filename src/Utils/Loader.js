@@ -13,7 +13,7 @@ const Loader = ({ children }) => {
   };
 
   useEffect(() => {
-    console.log("Loader state:", loader); // Add this to debug
+    "Loader state:", loader; // Add this to debug
   }, [loader]);
   return (
     <>

@@ -25,12 +25,13 @@ const Sidebar = ({ children }) => {
     //   link: "/",
     // },
   ];
+  console.log("in SideBar");
   const user = useSelector((store) => store.user);
   return (
     <div className="flex h-full items-center">
       <div className="ml-2 flex flex-col h-2/5 border-[1px] w-[60px] rounded-3xl justify-center items-center gap-6">
         {icons.map((iconinfo, index) => {
-          console.log(iconinfo);
+          iconinfo
           return (
             <Link
               to={iconinfo.link}

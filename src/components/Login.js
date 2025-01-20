@@ -15,7 +15,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    console.log(mail, password);
+     (mail, password);
     try {
       const res = await fetch("http://localhost:3000/login", {
         method: "POST",
@@ -29,7 +29,7 @@ const Login = () => {
         credentials: "include",
       });
       const responseData = await res.json();
-      console.log(responseData.status);
+       (responseData.status);
       if (responseData["messageType"] == "E") {
         dispatch(
           addToast({ message: responseData?.message, messageType: "E" })

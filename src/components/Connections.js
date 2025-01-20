@@ -11,8 +11,8 @@ const Connections = () => {
   const dispatch = useDispatch();
   const fetchConnections = async (req, res) => {
     if (userData) return;
-    dispatch(showLoader());
     try {
+      dispatch(showLoader());
       const response = await fetch("http://localhost:3000/user/allUsers", {
         method: "GET",
         headers: {
@@ -21,7 +21,7 @@ const Connections = () => {
         credentials: "include",
       });
       const responseData = await response.json();
-      dispatch(hideLoader());
+      console.log(responseData);
       if (responseData.messageType == "E") {
         dispatch(
           addToast({
@@ -30,24 +30,24 @@ const Connections = () => {
           })
         );
       } else {
-        dispatch(hideLoader());
         if (responseData?.data?.length != 0) {
           setUserData(responseData?.data);
         }
-        console.log(responseData?.data);
+        responseData?.data;
       }
     } catch (err) {
-      dispatch(hideLoader());
       dispatch(
         addToast({
           messageType: "E",
           message: err.message,
         })
       );
+    } finally {
+      dispatch(hideLoader());
     }
   };
   useEffect(() => {
-    if (userData == null) {
+    if (!userData) {
       fetchConnections();
     }
   }, []);

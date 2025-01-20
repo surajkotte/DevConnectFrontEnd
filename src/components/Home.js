@@ -31,7 +31,7 @@ const Home = ({ children }) => {
   //   <div className="flex flex-row flex-1 h-full items-center">
   //     <div className="ml-2 flex flex-col h-1/2 border-[1px] w-[70px] rounded-2xl justify-center items-center gap-8 fixed">
   //       {icons.map((iconinfo) => {
-  //         console.log(iconinfo);
+  //          (iconinfo);
   //         return (
   //           <Link
   //             to={iconinfo.link}

@@ -22,6 +22,7 @@ const NavBar = () => {
       dispatch(addToast({ message: data?.message, messageType: "E" }));
     }
   };
+   ("in NavBar");
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1">
