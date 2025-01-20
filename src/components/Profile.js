@@ -6,6 +6,7 @@ import { addToast } from "../reduxSlice/ToastSlice";
 
 const Profile = () => {
   const dispatch = useDispatch();
+  const [isFetching, setIsFetching] = useState(false);
   const [profileInfo, setProfileInfo] = useState("");
   const ALLOWED_UPDATES = [
     "age",
@@ -65,24 +66,43 @@ const Profile = () => {
     }
   };
   const getProfile = async () => {
-    const res = await fetch("http://localhost:3000/profile/view", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    });
-    const responseData = await res.json();
-    //dispatch(hideLoader());
-    console.log(responseData);
-    if (responseData?.messageType == "S") {
-      setProfileInfo(responseData?.data);
-    } else {
+    try {
+      dispatch(showLoader());
+      setIsFetching(true);
+      const res = await fetch("http://localhost:3000/profile/view", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      const responseData = await res.json();
+      //dispatch(hideLoader());
+      console.log(responseData);
+      if (responseData?.messageType == "S") {
+        setProfileInfo(responseData?.data);
+      } else {
+        dispatch(
+          addToast({
+            message: responseData?.message,
+            messageType: "E",
+          })
+        );
+      }
+    } catch (err) {
+      dispatch(
+        addToast({
+          message: err.message,
+          messageType: "E",
+        })
+      );
+    } finally {
+      setIsFetching(false);
+      dispatch(hideLoader());
     }
   };
   useEffect(() => {
-    if (!profileInfo) {
-      //dispatch(showLoader());
+    if (!isFetching) {
       getProfile();
     }
   }, []);

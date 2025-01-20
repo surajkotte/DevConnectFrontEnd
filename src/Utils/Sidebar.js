@@ -29,12 +29,13 @@ const Sidebar = ({ children }) => {
   return (
     <div className="flex h-full items-center">
       <div className="ml-2 flex flex-col h-2/5 border-[1px] w-[60px] rounded-3xl justify-center items-center gap-6">
-        {icons.map((iconinfo) => {
+        {icons.map((iconinfo, index) => {
           console.log(iconinfo);
           return (
             <Link
               to={iconinfo.link}
               className="transition-all duration-300 transform hover:scale-125"
+              key={index + iconinfo.link}
             >
               {iconinfo.icon}
             </Link>
@@ -59,7 +60,9 @@ const Sidebar = ({ children }) => {
           <LogoutOutlinedIcon style={{ fontSize: "28px" }} />
         </Link> */}
       </div>
-      <div className="ml-5 h-full w-full overflow-auto flex items-center justify-center">{children}</div>
+      <div className="ml-5 h-full w-full overflow-auto flex items-center justify-center">
+        {children}
+      </div>
     </div>
   );
 };

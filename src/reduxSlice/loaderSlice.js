@@ -5,10 +5,10 @@ const loaderSlice = createSlice({
   initialState: { isLoading: false },
   reducers: {
     showLoader: (state, action) => {
-      return { isLoading: true };
+      state.isLoading = true;
     },
     hideLoader: (state, action) => {
-      return { isLoading: false };
+      state.isLoading = false;
     },
   },
 });

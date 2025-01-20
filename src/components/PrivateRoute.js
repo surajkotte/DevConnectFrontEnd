@@ -17,7 +17,7 @@ const PrivateRoute = ({ children }) => {
       credentials: "include",
     });
     const responseData = await res.json();
-    console.log(responseData);
+    console.log(responseData + " in PrivateRoute");
     dispatch(hideLoader());
     if (responseData["messageType"] == "S") {
       dispatch(addUserData(responseData?.data));

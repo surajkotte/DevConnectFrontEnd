@@ -4,13 +4,16 @@ import { addToast } from "../reduxSlice/ToastSlice";
 import AccordionDown from "../images/AccordionDropDown.png";
 import AccordionUp from "../images/AccordionDropUp.svg";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { hideLoader, showLoader } from "../reduxSlice/loaderSlice";
 const Connections = () => {
   const [userData, setUserData] = useState("");
   const [accOpenIndex, setAccOpenIndex] = useState("");
   const dispatch = useDispatch();
   const fetchConnections = async (req, res) => {
+    if (userData) return;
+    dispatch(showLoader());
     try {
-      const response = await fetch("http://localhost:3000/user/connections", {
+      const response = await fetch("http://localhost:3000/user/allUsers", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -18,6 +21,7 @@ const Connections = () => {
         credentials: "include",
       });
       const responseData = await response.json();
+      dispatch(hideLoader());
       if (responseData.messageType == "E") {
         dispatch(
           addToast({
@@ -26,10 +30,14 @@ const Connections = () => {
           })
         );
       } else {
-        setUserData(responseData?.data);
+        dispatch(hideLoader());
+        if (responseData?.data?.length != 0) {
+          setUserData(responseData?.data);
+        }
         console.log(responseData?.data);
       }
     } catch (err) {
+      dispatch(hideLoader());
       dispatch(
         addToast({
           messageType: "E",
@@ -39,16 +47,18 @@ const Connections = () => {
     }
   };
   useEffect(() => {
-    fetchConnections();
+    if (userData == null) {
+      fetchConnections();
+    }
   }, []);
   return (
     <>
       {userData ? (
         <>
-          <div className="flex flex-wrap w-full h-full gap-5">
+          <div className="flex flex-row flex-wrap w-full h-full gap-5">
             {userData?.map((userInfo) => {
               return (
-                <div className="flex flex-row w-[30%] h-20 border-[1px] gap-4">
+                <div className="flex flex-row w-[28%] h-20 border-[1px] gap-4 p-2 rounded-2xl">
                   <div className="avatar">
                     <div className=" m-1 w-full rounded-full">
                       <img src={userInfo?.photoURL} />

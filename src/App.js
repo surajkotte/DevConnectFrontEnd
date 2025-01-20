@@ -26,12 +26,14 @@ const App = () => {
   return (
     <>
       {/* <Loader /> */}
-      <PrivateRoute>
-        <NavBar />
-        <Sidebar>
-          <Outlet />
-        </Sidebar>
-      </PrivateRoute>
+      <Loader>
+        <PrivateRoute>
+          <NavBar />
+          <Sidebar>
+            <Outlet />
+          </Sidebar>
+        </PrivateRoute>
+      </Loader>
     </>
   );
 };
