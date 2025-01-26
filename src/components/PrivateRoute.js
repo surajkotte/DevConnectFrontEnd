@@ -5,6 +5,7 @@ import { addUserData } from "../reduxSlice/userSlice";
 import Loader from "../Utils/loader";
 import Login from "./Login";
 import { hideLoader, showLoader } from "../reduxSlice/loaderSlice";
+import { addToast } from "../reduxSlice/ToastSlice";
 const PrivateRoute = ({ children }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -19,12 +20,15 @@ const PrivateRoute = ({ children }) => {
       });
       const responseData = await res.json();
       responseData + " in PrivateRoute";
-      if (responseData["messageType"] == "S") {
+      if (responseData?.messageType == "S") {
         dispatch(addUserData(responseData?.data));
       } else {
+        dispatch(addToast({ messageType: "E", message: err.message }));
         navigate("/login");
       }
     } catch (err) {
+      dispatch(addToast({ messageType: "E", message: err.message }));
+      navigate("/login");
     } finally {
       dispatch(hideLoader());
     }
