@@ -61,7 +61,7 @@ const Sidebar = ({ children }) => {
           <LogoutOutlinedIcon style={{ fontSize: "28px" }} />
         </Link> */}
       </div>
-      <div className="ml-5 h-full w-full overflow-auto flex items-center justify-center">
+      <div className="ml-5 h-full w-full overflow-y-scroll flex items-center justify-center">
         {children}
       </div>
     </div>

@@ -34,7 +34,7 @@ const PrivateRoute = ({ children }) => {
       fetchUser();
     }
   }, []);
-  return user ? children : <Login />;
+  return user ? <div className="w-full h-full">{children}</div> : <Login />;
 };
 
 export default PrivateRoute;

@@ -28,7 +28,7 @@ const App = () => {
       {/* <Loader /> */}
       <Loader>
         <PrivateRoute>
-          <NavBar />
+          {/* <NavBar /> */}
           <Sidebar>
             <Outlet />
           </Sidebar>
