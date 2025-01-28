@@ -23,7 +23,7 @@ const PrivateRoute = ({ children }) => {
       if (responseData?.messageType == "S") {
         dispatch(addUserData(responseData?.data));
       } else {
-        dispatch(addToast({ messageType: "E", message: err.message }));
+        //dispatch(addToast({ messageType: "E", message: responseData.message }));
         navigate("/login");
       }
     } catch (err) {
@@ -38,7 +38,11 @@ const PrivateRoute = ({ children }) => {
       fetchUser();
     }
   }, []);
-  return user ? <div className="w-full h-full">{children}</div> : <Login />;
+  return user ? (
+    <div className="w-full h-full flex flex-col">{children}</div>
+  ) : (
+    <Login />
+  );
 };
 
 export default PrivateRoute;

@@ -8,8 +8,23 @@ html {
   height: 100%;
 }
 #root {
-  height: 100%;
+  height: 100vh;
   overflow: hidden;
   margin: 0;
   padding: 0;
+}
+.masonry-grid {
+  display: flex;
+  margin-left: -16px; /* Adjust gap spacing */
+  width: auto;
+}
+
+.masonry-grid-column {
+  padding-left: 16px; /* Adjust gap spacing */
+  background-clip: padding-box;
+}
+
+/* Optional: Add transitions for smooth accordion expansion */
+.masonry-grid > * {
+  transition: height 0.3s ease-in-out;
 }

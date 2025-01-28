@@ -10,47 +10,43 @@ const Connections = () => {
   const [activeTab, setActiveTab] = useState("connections");
 
   return (
-    <div className="flex flex-col w-[90%] h-5/6 border-[1px] rounded-2xl items-center gap-5">
-      <div className="flex lg:w-[30%] md:w-[90%] sm:w-[90%] h-10 mt-4 rounded-3xl border-[1px] justify-between items-center p-1">
-        {/* Tab 1 */}
-        <div
-          className={`flex-1 flex justify-center items-center rounded-3xl cursor-pointer ${
-            activeTab === "connections"
-              ? "bg-blue-500 text-white"
-              : "bg-transparent text-white"
-          }`}
-          onClick={() => setActiveTab("connections")}
-        >
-          Grow
-        </div>
-
-        {/* Tab 2 */}
-        <div
-          className={`flex-1 flex justify-center items-center rounded-3xl cursor-pointer ${
-            activeTab === "requests"
-              ? "bg-blue-500 text-white"
-              : "bg-transparent text-white"
-          }`}
-          onClick={() => setActiveTab("requests")}
-        >
-          Received
-        </div>
-        <div
-          className={`flex-1 flex justify-center items-center rounded-3xl cursor-pointer ${
-            activeTab === "sent"
-              ? "bg-blue-500 text-white"
-              : "bg-transparent text-white"
-          }`}
-          onClick={() => setActiveTab("sent")}
-        >
-          Sent
+    <div className="flex flex-col w-[90%] h-[85%] max-h-[85%] border-[1px] rounded-2xl items-center gap-5">
+      <div className="flex w-full justify-center">
+        <div className="flex lg:w-[30%] md:w-[90%] sm:w-[90%] h-10 mt-4 rounded-3xl border-[1px] justify-between items-center p-1">
+          <div
+            className={`flex-1 flex justify-center items-center rounded-3xl cursor-pointer ${
+              activeTab === "connections" ? "bg-blue-500 text-white" : "bg-transparent text-white"
+            }`}
+            onClick={() => setActiveTab("connections")}
+          >
+            Grow
+          </div>
+          <div
+            className={`flex-1 flex justify-center items-center rounded-3xl cursor-pointer ${
+              activeTab === "requests" ? "bg-blue-500 text-white" : "bg-transparent text-white"
+            }`}
+            onClick={() => setActiveTab("requests")}
+          >
+            Received
+          </div>
+          <div
+            className={`flex-1 flex justify-center items-center rounded-3xl cursor-pointer ${
+              activeTab === "sent" ? "bg-blue-500 text-white" : "bg-transparent text-white"
+            }`}
+            onClick={() => setActiveTab("sent")}
+          >
+            Sent
+          </div>
         </div>
       </div>
-      <div className=" flex h-full items-center overflow-y-auto ">
-        {activeTab == "connections" ? (
+
+      <div className="flex h-full items-center overflow-auto">
+        {activeTab === "connections" ? (
           <MyConnection />
+        ) : activeTab === "requests" ? (
+          <MyRequest />
         ) : (
-          <>{activeTab == "requests" ? <MyRequest /> : <MySent />}</>
+          <MySent />
         )}
       </div>
     </div>
