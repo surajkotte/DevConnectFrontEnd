@@ -3,7 +3,10 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { KeyboardArrowUp } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { showLoader, hideLoader } from "../reduxSlice/loaderSlice";
-import { AddCircleOutlineOutlined, CheckCircleOutline } from "@mui/icons-material";
+import {
+  AddCircleOutlineOutlined,
+  CheckCircleOutline,
+} from "@mui/icons-material";
 import { addToast } from "../reduxSlice/ToastSlice";
 
 const UserConnectionInfo = ({ userInfo, isOpen, toggleAccordion }) => {
@@ -38,15 +41,15 @@ const UserConnectionInfo = ({ userInfo, isOpen, toggleAccordion }) => {
   };
 
   return (
-    <div className="flex flex-col sm:w-[48%] lg:w-[32%] border-[1px] rounded-2xl p-4 gap-4 self-start">
-      <div className="flex items-center gap-4">
+    <div className="flex flex-col border-[1px] w-full rounded-2xl p-4 gap-4 self-start min-w-0">
+      <div className="flex items-center gap-4 w-full">
         <div className="avatar">
           <div className="m-1 w-16 h-16 rounded-full">
             <img src={userInfo?.photoURL} alt="Avatar" />
           </div>
         </div>
 
-        <div className="flex flex-col justify-center">
+        <div className="flex flex-col justify-center w-full">
           <div className="flex justify-between">
             <span className="font-medium">{userInfo?.firstName}</span>
             <button onClick={() => connectionClicked(userInfo?._id)}>
@@ -54,19 +57,45 @@ const UserConnectionInfo = ({ userInfo, isOpen, toggleAccordion }) => {
             </button>
           </div>
           <span className="text-gray-500">
-            {userInfo?.company || "Not Mentioned"} | {userInfo?.designation || "Not Mentioned"}
+            {userInfo?.company || "Not Mentioned"} |{" "}
+            {userInfo?.designation || "Not Mentioned"}
           </span>
         </div>
 
-        <button className="ml-auto" onClick={() => toggleAccordion(userInfo?._id)}>
+        <button
+          className="ml-auto"
+          onClick={() => toggleAccordion(userInfo?._id)}
+        >
           {isOpen ? <KeyboardArrowUp /> : <KeyboardArrowDownIcon />}
         </button>
       </div>
 
       {isOpen && (
-        <div className="mt-4 text-sm text-gray-600 overflow-y-auto max-h-96">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-          varius enim in eros elementum tristique.
+        <div className="flex flex-col gap-2 w-full overflow-hidden transition-all duration-300 p-3 rounded-lg max-h-40 overflow-y-auto">
+          {/* About Section */}
+          {userInfo?.about && (
+            <div>
+              <h3 className="font-semibold text-gray-700">About</h3>
+              <p className="text-gray-600 text-sm">{userInfo.about}</p>
+            </div>
+          )}
+
+          {/* Skills Section */}
+          {userInfo?.skills?.length > 0 && (
+            <div>
+              <h3 className="font-semibold text-gray-700">Skills</h3>
+              <div className="flex flex-wrap gap-2">
+                {userInfo.skills.map((skill, index) => (
+                  <span
+                    key={index}
+                    className="bg-blue-200 text-blue-800 text-xs font-semibold px-3 py-1 rounded-full"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -125,20 +154,49 @@ const MyConnection = () => {
   }, [userData]);
 
   return (
-    <div className="p-2 flex flex-wrap gap-4 justify-between min-h-full max-h-full">
-      {userData.length > 0 ? (
-        userData.map((userInfo) => (
-          <UserConnectionInfo
-            key={userInfo._id}
-            userInfo={userInfo}
-            isOpen={accOpenIndex === userInfo._id}
-            toggleAccordion={toggleAccordion}
-          />
-        ))
+    <div className="grow w-full h-full shadow rounded overflow-y-auto">
+      {userData?.length !== 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 w-full p-3 max-w-[95%] m-auto">
+          {[0, 1, 2].map((colIndex) => (
+            <div key={colIndex} className="flex flex-col gap-3">
+              {userData?.map((userInfo, index) => {
+                if (index % 3 === colIndex) {
+                  return (
+                    <UserConnectionInfo
+                      key={userInfo._id}
+                      userInfo={userInfo}
+                      isOpen={accOpenIndex === userInfo._id}
+                      toggleAccordion={toggleAccordion}
+                    />
+                  );
+                }
+                return null;
+              })}
+            </div>
+          ))}
+        </div>
       ) : (
-        <h1>No connections found</h1>
+        <div className="w-full h-full flex justify-center items-center">
+          <span className="opacity-50">No details found</span>
+        </div>
       )}
     </div>
+    // <div className="p-2 flex flex-wrap gap-4 justify-between min-h-full max-h-full">
+    //   {userData.length > 0 ? (
+    //     <div className=" w-1/2 flex flex-col gap-3">
+    //       {userData.map((userInfo) => {
+    //         <UserConnectionInfo
+    //           key={userInfo._id}
+    //           userInfo={userInfo}
+    //           isOpen={accOpenIndex === userInfo._id}
+    //           toggleAccordion={toggleAccordion}
+    //         />;
+    //       })}
+    //     </div>
+    //   ) : (
+    //     <h1>No connections found</h1>
+    //   )}
+    // </div>
   );
 };
 

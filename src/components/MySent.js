@@ -6,14 +6,14 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { KeyboardArrowUp } from "@mui/icons-material";
 const UserConnectionInfo = ({ userInfo, isOpen, toggleAccordion }) => {
   return (
-    <div className="flex flex-col sm:w-[48%] lg:w-[32%] border-[1px] rounded-2xl p-4 gap-4">
-      <div className="flex items-center gap-4">
+    <div className="flex flex-col border-[1px] w-full rounded-2xl p-4 gap-4">
+      <div className="flex items-center gap-4 w-full">
         <div className="avatar">
           <div className=" m-1 w-16 h-16 rounded-full">
             <img src={userInfo?.photoURL} />
           </div>
         </div>
-        <div className="flex flex-col justify-center ">
+        <div className="flex flex-col justify-center w-full">
           <div className="flex justify-between">
             <span className="font-medium">{userInfo?.firstName}</span>
             <div className="rounded-3xl bg-zinc-500 p-1">
@@ -70,38 +70,42 @@ const MySent = () => {
       });
     }
   };
+  const toggleAccordion = (id) => {
+    setAccOpenIndex((prev) => (prev === id ? null : id));
+  };
   useEffect(() => {
     if (!sentRequests) {
       fetchRequests();
     }
   }, []);
   return (
-    <>
-      {sentRequests && sentRequests?.length != 0 ? (
-        <>
-          <div className="p-2 flex flex-wrap gap-4 justify-between">
-            {sentRequests &&
-              sentRequests?.map((userInfo, index) => {
-                return (
-                  <UserConnectionInfo
-                    userInfo={userInfo}
-                    key={userInfo?._id}
-                    className=" overflow-y-auto"
-                    isOpen={accOpenIndex == userInfo?._id}
-                    toggleAccordion={setAccOpenIndex}
-                    //requestStatus={isRequestSent}
-                    //setUserData={setConnectionStatus}
-                  />
-                );
+    <div className="grow w-full h-full shadow rounded overflow-y-auto">
+      {sentRequests && sentRequests?.length !== 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 w-full p-3 max-w-[95%] m-auto">
+          {[0, 1, 2].map((colIndex) => (
+            <div key={colIndex} className="flex flex-col gap-3">
+              {sentRequests?.map((userInfo, index) => {
+                if (index % 3 === colIndex) {
+                  return (
+                    <UserConnectionInfo
+                      key={userInfo._id}
+                      userInfo={userInfo}
+                      isOpen={accOpenIndex === userInfo._id}
+                      toggleAccordion={toggleAccordion}
+                    />
+                  );
+                }
+                return null;
               })}
-          </div>
-        </>
+            </div>
+          ))}
+        </div>
       ) : (
-        <>
-          <div>No connections found</div>
-        </>
+        <div className="w-full h-full flex justify-center items-center">
+          <span className="opacity-50">No details found</span>
+        </div>
       )}
-    </>
+    </div>
   );
 };
 

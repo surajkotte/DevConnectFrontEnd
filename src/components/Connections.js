@@ -15,7 +15,9 @@ const Connections = () => {
         <div className="flex lg:w-[30%] md:w-[90%] sm:w-[90%] h-10 mt-4 rounded-3xl border-[1px] justify-between items-center p-1">
           <div
             className={`flex-1 flex justify-center items-center rounded-3xl cursor-pointer ${
-              activeTab === "connections" ? "bg-blue-500 text-white" : "bg-transparent text-white"
+              activeTab === "connections"
+                ? "bg-blue-500 text-white"
+                : "bg-transparent text-white"
             }`}
             onClick={() => setActiveTab("connections")}
           >
@@ -23,7 +25,9 @@ const Connections = () => {
           </div>
           <div
             className={`flex-1 flex justify-center items-center rounded-3xl cursor-pointer ${
-              activeTab === "requests" ? "bg-blue-500 text-white" : "bg-transparent text-white"
+              activeTab === "requests"
+                ? "bg-blue-500 text-white"
+                : "bg-transparent text-white"
             }`}
             onClick={() => setActiveTab("requests")}
           >
@@ -31,7 +35,9 @@ const Connections = () => {
           </div>
           <div
             className={`flex-1 flex justify-center items-center rounded-3xl cursor-pointer ${
-              activeTab === "sent" ? "bg-blue-500 text-white" : "bg-transparent text-white"
+              activeTab === "sent"
+                ? "bg-blue-500 text-white"
+                : "bg-transparent text-white"
             }`}
             onClick={() => setActiveTab("sent")}
           >
@@ -40,7 +46,7 @@ const Connections = () => {
         </div>
       </div>
 
-      <div className="flex h-full items-center overflow-auto">
+      <div className="flex h-full w-full items-center overflow-auto">
         {activeTab === "connections" ? (
           <MyConnection />
         ) : activeTab === "requests" ? (

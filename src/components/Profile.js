@@ -3,13 +3,16 @@ import { useEffect, useState } from "react";
 import { showLoader, hideLoader } from "../reduxSlice/loaderSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { addToast } from "../reduxSlice/ToastSlice";
-import Loader from "../Utils/loader";
+import Select from "react-select";
+import { itRoles, skills } from "../staticdata/rolls_skills";
+import makeAnimated from "react-select/animated";
 
 const Profile = () => {
   const dispatch = useDispatch();
   const [isFetching, setIsFetching] = useState(false);
   const [profileInfo, setProfileInfo] = useState("");
   const loader = useSelector((store) => store.loader);
+  const animatedComponents = makeAnimated();
   const ALLOWED_UPDATES = [
     "age",
     "photoURL",
@@ -21,17 +24,40 @@ const Profile = () => {
     "company",
     "designation",
   ];
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      backgroundColor: "inherit", // Background inherits from the parent container
+      //borderColor: "#2d3748", // Adjust border color to match
+      //color: "#fff", // Text color
+    }),
+    menu: (provided) => ({
+      ...provided,
+      //backgroundColor: "inherit", // Menu background inherits from the parent container
+      color: "black", // Text color
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isSelected ? "#2d3748" : "inherit", // Highlight selected option
+      //color: "#fff", // Option text color
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      color: "#fff", // Color of the selected value
+    }),
+  };
   const handleSaveClick = async () => {
     const userData = profileInfo;
     userData;
     const newObject = {};
+    console.log(userData);
     Object.keys(userData).forEach((element) => {
       element;
       if (ALLOWED_UPDATES.includes(element)) {
         newObject[element] = userData[element];
       }
     });
-    newObject;
+    newObject["skills"] = newObject["skills"].map((skill) => skill.value);
     try {
       const res = await fetch("http://localhost:3000/profile/edit", {
         method: "POST",
@@ -78,10 +104,18 @@ const Profile = () => {
         },
         credentials: "include",
       });
-      const responseData = await res.json();
-      responseData;
+      let responseData = await res.json();
       if (responseData?.messageType == "S") {
-        setProfileInfo(responseData?.data);
+        const clonedData = { ...responseData?.data };
+        const skillsData = clonedData.skills.map((skill) => ({
+          label: skill,
+          value: skill,
+        }));
+        clonedData.skills = skillsData;
+        // const skillsData = responseData?.data["skills"].map((skill) => {
+        //   return { value: skill, label: skill };
+        // });
+        setProfileInfo(clonedData);
       } else {
         dispatch(
           addToast({
@@ -241,7 +275,7 @@ const Profile = () => {
                 <div className="label">
                   <span className="label-text">Skills</span>
                 </div>
-                <input
+                {/* <input
                   type="text"
                   placeholder="Type here"
                   className="input input-bordered input-accent w-full"
@@ -251,6 +285,18 @@ const Profile = () => {
                       return { ...existingData, skills: e.target.value };
                     });
                   }}
+                /> */}
+                <Select
+                  isMulti
+                  closeMenuOnSelect={false}
+                  components={animatedComponents}
+                  options={skills}
+                  value={profileInfo.skills}
+                  className="w-full bg-inherit text-white"
+                  onChange={(selected) =>
+                    setProfileInfo({ ...profileInfo, skills: selected })
+                  }
+                  styles={customStyles}
                 />
               </label>
               <label className="form-control w-[44%]">
@@ -273,16 +319,20 @@ const Profile = () => {
                 <div className="label">
                   <span className="label-text">Designation</span>
                 </div>
-                <input
-                  type="text"
-                  placeholder="Type here"
-                  className="input input-bordered input-accent w-full"
-                  value={profileInfo?.designation}
-                  onChange={(e) => {
-                    setProfileInfo((existingData) => {
-                      return { ...existingData, designation: e.target.value };
-                    });
-                  }}
+                <Select
+                  options={itRoles}
+                  components={animatedComponents}
+                  value={itRoles.find(
+                    (role) => role.value === profileInfo.designation
+                  )}
+                  className="w-full bg-inherit"
+                  onChange={(selected) =>
+                    setProfileInfo({
+                      ...profileInfo,
+                      designation: selected.value,
+                    })
+                  }
+                  styles={customStyles}
                 />
               </label>
               <label className="form-control w-[90%]">
