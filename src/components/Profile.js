@@ -6,6 +6,9 @@ import { addToast } from "../reduxSlice/ToastSlice";
 import Select from "react-select";
 import { itRoles, skills } from "../staticdata/rolls_skills";
 import makeAnimated from "react-select/animated";
+import Header from "./profilesection/Header";
+import JobExperience from "./profilesection/JobExperience";
+import Skills from "./profilesection/Skills";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -183,214 +186,249 @@ const Profile = () => {
   //   return <Loader />;
   // }
   return (
-    <>
-      {profileInfo ? (
-        <div className="w-3/4 h-3/4 flex border-[1px] rounded-xl justify-center items-center shadow-lg border-slate-600 overflow-auto">
-          <div className="flex w-full h-full flex-wrap justify-center items-start mt-4">
-            <h1 className=" font-bold text-2xl w-full justify-center items-center flex ">
-              Profile Information
-            </h1>
-            <div className=" flex justify-center items-center w-full flex-wrap gap-3">
-              <label className="form-control w-[44%]">
-                <div className="label">
-                  <span className="label-text">First Name</span>
-                </div>
-                <input
-                  type="text"
-                  placeholder="Type here"
-                  className="input input-bordered input-accent w-full"
-                  value={profileInfo?.firstName}
-                  onChange={(e) => {
-                    setProfileInfo((existingData) => {
-                      return { ...existingData, firstName: e.target.value };
-                    });
-                  }}
-                />
-              </label>
-
-              <label className="form-control w-[44%]">
-                <div className="label">
-                  <span className="label-text">Last Name</span>
-                </div>
-                <input
-                  type="text"
-                  placeholder="Type here"
-                  className="input input-bordered input-accent w-full"
-                  value={profileInfo?.lastName}
-                  onChange={(e) => {
-                    setProfileInfo((existingData) => {
-                      return { ...existingData, lastName: e.target.value };
-                    });
-                  }}
-                />
-              </label>
-
-              <label className="form-control w-[44%]">
-                <div className="label">
-                  <span className="label-text">Email ID</span>
-                </div>
-                <input
-                  type="text"
-                  placeholder="Type here"
-                  className="input input-bordered input-accent w-full"
-                  value={profileInfo?.emailId}
-                />
-              </label>
-
-              <label className="form-control w-[44%]">
-                <div className="label">
-                  <span className="label-text">Age</span>
-                </div>
-                <input
-                  type="number"
-                  placeholder="Type here"
-                  className="input input-bordered input-accent w-full"
-                  value={profileInfo?.age}
-                  onChange={(e) => {
-                    setProfileInfo((existingData) => {
-                      return { ...existingData, age: e.target.value };
-                    });
-                  }}
-                />
-              </label>
-
-              <label className="form-control w-[44%]">
-                <div className="label">
-                  <span className="label-text">Gender</span>
-                </div>
-                <input
-                  type="text"
-                  placeholder="Type here"
-                  className="input input-bordered input-accent w-full"
-                  value={profileInfo?.gender}
-                  onChange={(e) => {
-                    setProfileInfo((existingData) => {
-                      return { ...existingData, gender: e.target.value };
-                    });
-                  }}
-                />
-              </label>
-
-              <label className="form-control w-[44%]">
-                <div className="label">
-                  <span className="label-text">Skills</span>
-                </div>
-                {/* <input
-                  type="text"
-                  placeholder="Type here"
-                  className="input input-bordered input-accent w-full"
-                  value={profileInfo?.skills}
-                  onChange={(e) => {
-                    setProfileInfo((existingData) => {
-                      return { ...existingData, skills: e.target.value };
-                    });
-                  }}
-                /> */}
-                <Select
-                  isMulti
-                  closeMenuOnSelect={false}
-                  components={animatedComponents}
-                  options={skills}
-                  value={profileInfo.skills}
-                  className="w-full bg-inherit text-white"
-                  onChange={(selected) =>
-                    setProfileInfo({ ...profileInfo, skills: selected })
-                  }
-                  styles={customStyles}
-                />
-              </label>
-              <label className="form-control w-[44%]">
-                <div className="label">
-                  <span className="label-text">Company</span>
-                </div>
-                <input
-                  type="text"
-                  placeholder="Type here"
-                  className="input input-bordered input-accent w-full"
-                  value={profileInfo?.company}
-                  onChange={(e) => {
-                    setProfileInfo((existingData) => {
-                      return { ...existingData, company: e.target.value };
-                    });
-                  }}
-                />
-              </label>
-              <label className="form-control w-[44%]">
-                <div className="label">
-                  <span className="label-text">Designation</span>
-                </div>
-                <Select
-                  options={itRoles}
-                  components={animatedComponents}
-                  value={itRoles.find(
-                    (role) => role.value === profileInfo.designation
-                  )}
-                  className="w-full bg-inherit"
-                  onChange={(selected) =>
-                    setProfileInfo({
-                      ...profileInfo,
-                      designation: selected.value,
-                    })
-                  }
-                  styles={customStyles}
-                />
-              </label>
-              <label className="form-control w-[90%]">
-                <div className="label">
-                  <span className="label-text">About</span>
-                </div>
-                <textarea
-                  placeholder="Type here"
-                  className="textarea textarea-bordered textarea-accent w-full"
-                  rows="3"
-                  value={profileInfo?.about}
-                  onChange={(e) => {
-                    setProfileInfo((existingData) => {
-                      return { ...existingData, about: e.target.value };
-                    });
-                  }}
-                ></textarea>
-              </label>
-              {/* <label className="form-control w-[90%]">
-            <div className="label">
-              <span className="label-text">Skill</span>
-            </div>
-            <textarea
-              placeholder="Type here"
-              className="textarea textarea-bordered textarea-accent w-full"
-              rows="3"
-            ></textarea>
-          </label> */}
-            </div>
-          </div>
-          <div className="flex w-36 flex-col flex-wrap justify-center items-center gap-3">
-            <div className="avatar">
-              <div className="ring-primary ring-offset-base-100 w-24 rounded-full ring ring-offset-2">
-                <img
-                  src={
-                    profileInfo.photoURL
-                      ? profileInfo.photoURL
-                      : "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                  }
-                />
-              </div>
-            </div>
-            <button className="btn btn-primary btn-sm">Change profile</button>
-            <button
-              className="btn btn-success btn-sm w-full"
-              onClick={handleSaveClick}
-            >
-              Save
-            </button>
-          </div>
+    <div className="w-[95%] h-[85%] flex flex-col border-[1px] rounded-xl  shadow-lg overflow-y-auto">
+      <Header
+        photoURL={profileInfo?.photoURL}
+        about={profileInfo?.about}
+        firstName={profileInfo?.firstName}
+        lastName={profileInfo?.lastName}
+        companyName={profileInfo?.company}
+        designation={profileInfo?.designation}
+      />
+      <div className="w-full h-full flex flex-col gap-3 p-8">
+        <div className="flex justify-between items-center ">
+          <h2 className="text-2xl font-semibold mb-3">Education</h2>
+          <button className="border-[1px] p-2  hover:bg-gray-600 transition-all">
+            Add Education
+          </button>
         </div>
-      ) : (
-        <div className=" flex justify-center items-center">
-          Profile information not found
+      </div>
+      <div className="w-full h-full flex flex-col gap-3 p-8">
+        <div className="flex justify-between items-center">
+          <h2 className="text-2xl font-semibold mb-3">Experience</h2>
+          <button className="border-[1px] p-2 hover:bg-gray-600 transition-all">
+            Add Experience
+          </button>
         </div>
-      )}
-    </>
+        <JobExperience />
+      </div>
+      <div className="w-full h-full flex flex-col gap-3 p-8">
+        <div className="flex justify-between items-center ">
+          <h2 className="text-2xl font-semibold mb-3">Skills</h2>
+          <button className="border-[1px] p-2  hover:bg-gray-600 transition-all">
+            Add Skills
+          </button>
+        </div>
+        <Skills skills={profileInfo?.skills} />
+      </div>
+    </div>
   );
 };
+// <>
+//   {profileInfo ? (
+//     <div className="w-[95%] h-[85%] flex border-[1px] rounded-xl justify-center items-center shadow-lg border-slate-600 overflow-auto">
+//       <div className="flex w-full h-full flex-wrap justify-center items-start mt-4">
+//         <h1 className=" font-bold text-2xl w-full justify-center items-center flex ">
+//           Profile Information
+//         </h1>
+//         <div className=" flex justify-center items-center w-full flex-wrap gap-3">
+//           <label className="form-control w-[44%]">
+//             <div className="label">
+//               <span className="label-text">First Name</span>
+//             </div>
+//             <input
+//               type="text"
+//               placeholder="Type here"
+//               className="input input-bordered input-accent w-full"
+//               value={profileInfo?.firstName}
+//               onChange={(e) => {
+//                 setProfileInfo((existingData) => {
+//                   return { ...existingData, firstName: e.target.value };
+//                 });
+//               }}
+//             />
+//           </label>
 
+//           <label className="form-control w-[44%]">
+//             <div className="label">
+//               <span className="label-text">Last Name</span>
+//             </div>
+//             <input
+//               type="text"
+//               placeholder="Type here"
+//               className="input input-bordered input-accent w-full"
+//               value={profileInfo?.lastName}
+//               onChange={(e) => {
+//                 setProfileInfo((existingData) => {
+//                   return { ...existingData, lastName: e.target.value };
+//                 });
+//               }}
+//             />
+//           </label>
+
+//           <label className="form-control w-[44%]">
+//             <div className="label">
+//               <span className="label-text">Email ID</span>
+//             </div>
+//             <input
+//               type="text"
+//               placeholder="Type here"
+//               className="input input-bordered input-accent w-full"
+//               value={profileInfo?.emailId}
+//             />
+//           </label>
+
+//           <label className="form-control w-[44%]">
+//             <div className="label">
+//               <span className="label-text">Age</span>
+//             </div>
+//             <input
+//               type="number"
+//               placeholder="Type here"
+//               className="input input-bordered input-accent w-full"
+//               value={profileInfo?.age}
+//               onChange={(e) => {
+//                 setProfileInfo((existingData) => {
+//                   return { ...existingData, age: e.target.value };
+//                 });
+//               }}
+//             />
+//           </label>
+
+//           <label className="form-control w-[44%]">
+//             <div className="label">
+//               <span className="label-text">Gender</span>
+//             </div>
+//             <input
+//               type="text"
+//               placeholder="Type here"
+//               className="input input-bordered input-accent w-full"
+//               value={profileInfo?.gender}
+//               onChange={(e) => {
+//                 setProfileInfo((existingData) => {
+//                   return { ...existingData, gender: e.target.value };
+//                 });
+//               }}
+//             />
+//           </label>
+
+//           <label className="form-control w-[44%]">
+//             <div className="label">
+//               <span className="label-text">Skills</span>
+//             </div>
+//             {/* <input
+//               type="text"
+//               placeholder="Type here"
+//               className="input input-bordered input-accent w-full"
+//               value={profileInfo?.skills}
+//               onChange={(e) => {
+//                 setProfileInfo((existingData) => {
+//                   return { ...existingData, skills: e.target.value };
+//                 });
+//               }}
+//             /> */}
+//             <Select
+//               isMulti
+//               closeMenuOnSelect={false}
+//               components={animatedComponents}
+//               options={skills}
+//               value={profileInfo.skills}
+//               className="w-full bg-inherit text-white"
+//               onChange={(selected) =>
+//                 setProfileInfo({ ...profileInfo, skills: selected })
+//               }
+//               styles={customStyles}
+//             />
+//           </label>
+//           <label className="form-control w-[44%]">
+//             <div className="label">
+//               <span className="label-text">Company</span>
+//             </div>
+//             <input
+//               type="text"
+//               placeholder="Type here"
+//               className="input input-bordered input-accent w-full"
+//               value={profileInfo?.company}
+//               onChange={(e) => {
+//                 setProfileInfo((existingData) => {
+//                   return { ...existingData, company: e.target.value };
+//                 });
+//               }}
+//             />
+//           </label>
+//           <label className="form-control w-[44%]">
+//             <div className="label">
+//               <span className="label-text">Designation</span>
+//             </div>
+//             <Select
+//               options={itRoles}
+//               components={animatedComponents}
+//               value={itRoles.find(
+//                 (role) => role.value === profileInfo.designation
+//               )}
+//               className="w-full bg-inherit"
+//               onChange={(selected) =>
+//                 setProfileInfo({
+//                   ...profileInfo,
+//                   designation: selected.value,
+//                 })
+//               }
+//               styles={customStyles}
+//             />
+//           </label>
+//           <label className="form-control w-[90%]">
+//             <div className="label">
+//               <span className="label-text">About</span>
+//             </div>
+//             <textarea
+//               placeholder="Type here"
+//               className="textarea textarea-bordered textarea-accent w-full"
+//               rows="3"
+//               value={profileInfo?.about}
+//               onChange={(e) => {
+//                 setProfileInfo((existingData) => {
+//                   return { ...existingData, about: e.target.value };
+//                 });
+//               }}
+//             ></textarea>
+//           </label>
+//           {/* <label className="form-control w-[90%]">
+//         <div className="label">
+//           <span className="label-text">Skill</span>
+//         </div>
+//         <textarea
+//           placeholder="Type here"
+//           className="textarea textarea-bordered textarea-accent w-full"
+//           rows="3"
+//         ></textarea>
+//       </label> */}
+//         </div>
+//       </div>
+//       <div className="flex w-36 flex-col flex-wrap justify-center items-center gap-3">
+//         <div className="avatar">
+//           <div className="ring-primary ring-offset-base-100 w-24 rounded-full ring ring-offset-2">
+//             <img
+//               src={
+//                 profileInfo.photoURL
+//                   ? profileInfo.photoURL
+//                   : "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+//               }
+//             />
+//           </div>
+//         </div>
+//         <button className="btn btn-primary btn-sm">Change profile</button>
+//         <button
+//           className="btn btn-success btn-sm w-full"
+//           onClick={handleSaveClick}
+//         >
+//           Save
+//         </button>
+//       </div>
+//     </div>
+//   ) : (
+//     <div className=" flex justify-center items-center">
+//       Profile information not found
+//     </div>
+//   )}
+// </>
 export default Profile;

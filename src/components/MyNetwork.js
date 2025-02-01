@@ -3,44 +3,10 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { KeyboardArrowUp } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { showLoader, hideLoader } from "../reduxSlice/loaderSlice";
-import {
-  AddCircleOutlineOutlined,
-  CheckCircleOutline,
-} from "@mui/icons-material";
-import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
+import MessageIcon from "@mui/icons-material/Message";
 import { addToast } from "../reduxSlice/ToastSlice";
 
 const UserConnectionInfo = ({ userInfo, isOpen, toggleAccordion }) => {
-  const dispatch = useDispatch();
-
-  const connectionClicked = async (userId) => {
-    try {
-      const url = `http://localhost:3000/request/send/interested/${userId}`;
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
-      const responseData = await response.json();
-
-      dispatch(
-        addToast({
-          messageType: responseData?.messageType,
-          message: responseData?.message,
-        })
-      );
-    } catch (err) {
-      dispatch(
-        addToast({
-          messageType: "E",
-          message: err.message,
-        })
-      );
-    }
-  };
-
   return (
     <div className="flex flex-col border-[1px] w-full rounded-2xl p-4 gap-4 self-start min-w-0">
       <div className="flex items-center gap-4 w-full">
@@ -57,8 +23,7 @@ const UserConnectionInfo = ({ userInfo, isOpen, toggleAccordion }) => {
               className=" text-blue-500"
               onClick={() => connectionClicked(userInfo?._id)}
             >
-              {/* Connect <PersonAddAlt1Icon /> */}
-              <div className="text-sm ">Connect</div>
+              <MessageIcon />
             </button>
           </div>
           <span className="text-gray-500">
@@ -107,7 +72,7 @@ const UserConnectionInfo = ({ userInfo, isOpen, toggleAccordion }) => {
   );
 };
 
-const MyConnection = () => {
+const MyNetwork = () => {
   const [accOpenIndex, setAccOpenIndex] = useState(null);
   const [userData, setUserData] = useState([]);
   const dispatch = useDispatch();
@@ -117,7 +82,7 @@ const MyConnection = () => {
 
     try {
       dispatch(showLoader());
-      const response = await fetch("http://localhost:3000/user/allUsers", {
+      const response = await fetch("http://localhost:3000/user/connections", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -205,4 +170,4 @@ const MyConnection = () => {
   );
 };
 
-export default MyConnection;
+export default MyNetwork;

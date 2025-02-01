@@ -24,7 +24,7 @@ const Particle = () => {
   }, []);
 
   const particlesLoaded = (container) => {
-     (container);
+    container;
   };
 
   const options = useMemo(
@@ -93,7 +93,7 @@ const Particle = () => {
           value: { min: 1, max: 5 },
         },
       },
-      detectRetina: true,
+      detectRetina: false,
     }),
     []
   );

@@ -16,7 +16,7 @@ const UserConnectionInfo = ({ userInfo, isOpen, toggleAccordion }) => {
         <div className="flex flex-col justify-center w-full">
           <div className="flex justify-between">
             <span className="font-medium">{userInfo?.firstName}</span>
-            <div className="rounded-3xl bg-zinc-500 p-1">
+            <div className="rounded-3xl bg-zinc-500 p-2 text-sm text-white">
               <span className=" text-sm">Pending</span>
             </div>
           </div>

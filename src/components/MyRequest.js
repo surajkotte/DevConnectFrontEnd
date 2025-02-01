@@ -87,9 +87,31 @@ const UserConnectionInfo = ({ userInfo, isOpen, toggleAccordion }) => {
       </div>
 
       {isOpen && (
-        <div className="flex flex-wrap w-full overflow-hidden">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-          varius enim in eros elementum tristique.
+        <div className="flex flex-col gap-2 w-full overflow-hidden transition-all duration-300 p-3 rounded-lg max-h-40 overflow-y-auto">
+          {/* About Section */}
+          {userInfo?.about && (
+            <div>
+              <h3 className="font-semibold text-gray-700">About</h3>
+              <p className="text-gray-600 text-sm">{userInfo.about}</p>
+            </div>
+          )}
+
+          {/* Skills Section */}
+          {userInfo?.skills?.length > 0 && (
+            <div>
+              <h3 className="font-semibold text-gray-700">Skills</h3>
+              <div className="flex flex-wrap gap-2">
+                {userInfo.skills.map((skill, index) => (
+                  <span
+                    key={index}
+                    className="bg-blue-200 text-blue-800 text-xs font-semibold px-3 py-1 rounded-full"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
