@@ -21,6 +21,7 @@ import "./index.css";
 import { addUserData } from "./reduxSlice/userSlice";
 import Loader from "./Utils/loader";
 import Toast from "./Utils/Toast";
+import Modal from "./Utils/Modal";
 
 const App = () => {
   return (

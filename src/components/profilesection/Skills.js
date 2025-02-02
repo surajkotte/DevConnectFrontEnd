@@ -8,7 +8,7 @@ const Skills = ({ skills }) => {
           skills?.map((skill, index) => (
             <li
               key={index}
-              className="p-4 rounded-lg  hover:bg-gray-200 transition duration-200 space-x-2 shadow-md"
+              className="p-4 transition duration-200 space-x-2 shadow-md border-white border-[1px] rounded-full text-sm text-white"
             >
               {skill.value}
             </li>

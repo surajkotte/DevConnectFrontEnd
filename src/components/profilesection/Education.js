@@ -1,6 +1,6 @@
 import React from "react";
 
-const JobExperience = ({ experienceDetails }) => {
+const Education = ({ educationDetails }) => {
   const DateFormatter = (date) => {
     const monthChar = [
       "Jan",
@@ -23,18 +23,35 @@ const JobExperience = ({ experienceDetails }) => {
     const day = String(Date1.getDate()).padStart(2, "0");
     return `${monthChar[month - 1]}-${year}`;
   };
+
+  // return (
+  //   <div className="education-section pt-3 rounded-lg shadow-md">
+  //     {educationDetails &&
+  //       educationDetails.map((education, index) => (
+  //         <div key={index} className="education-item mb-6">
+  //           <h3 className="text-xl font-semibold">{education.institution}</h3>
+  //           <p className="text-lg">{education.degree}</p>
+  //           <p className="text-md text-gray-600">{education.fieldOfStudy}</p>
+  //           <p className="text-sm text-gray-500">
+  //             {DateFormatter(education.startDate)} to{" "}
+  //             {DateFormatter(education.endDate)}
+  //           </p>
+  //         </div>
+  //       ))}
+  //   </div>
+  // );
   return (
     <ul className="timeline">
-      {experienceDetails &&
-        experienceDetails.map((experience, index) => {
+      {educationDetails &&
+        educationDetails.map((educationInfo, index) => {
           return (
             <li key={index}>
               <hr />
               <div className="timeline-start">
                 <div className="border-[1px] rounded-full p-2">
-                  {DateFormatter(experience.startDate)} to{" "}
-                  {experience.endDate
-                    ? DateFormatter(experience.endDate)
+                  {DateFormatter(educationInfo.startDate)} to{" "}
+                  {educationInfo.endDate
+                    ? DateFormatter(educationInfo.endDate)
                     : "Current"}
                 </div>
               </div>
@@ -52,10 +69,10 @@ const JobExperience = ({ experienceDetails }) => {
                   />
                 </svg>
               </div>
-              <div className="timeline-end timeline-box">
-                <h3>{experience.company}</h3>
-                <p>{experience.designation}</p>
-                {/* <p>{experience.description}</p> */}
+              <div className="timeline-end timeline-box items-center justify-center flex flex-col">
+                <h2 className="fle font-bold text-lg">{educationInfo.institution}</h2>
+                <p className="flex text-sm">{educationInfo?.degree}</p>
+                <p className="flex text-sm">{educationInfo?.fieldOfStudy}</p>
               </div>
               <hr />
             </li>
@@ -65,4 +82,4 @@ const JobExperience = ({ experienceDetails }) => {
   );
 };
 
-export default JobExperience;
+export default Education;
