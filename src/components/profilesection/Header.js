@@ -41,7 +41,9 @@ const Header = ({
       {about && (
         <div className="mt-8">
           <h2 className="text-2xl font-semibold mb-3">About</h2>
-          <p className="leading-relaxed p-4 rounded-lg shadow-sm">{about}</p>
+          <p className="leading-relaxed p-4 rounded-lg shadow-sm">
+            {about ? about : "No Details Found"}
+          </p>
         </div>
       )}
     </div>
