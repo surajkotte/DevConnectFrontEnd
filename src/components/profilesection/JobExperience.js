@@ -52,9 +52,9 @@ const JobExperience = ({ experienceDetails }) => {
                   />
                 </svg>
               </div>
-              <div className="timeline-end timeline-box">
-                <h3>{experience.company}</h3>
-                <p>{experience.designation}</p>
+              <div className="timeline-end timeline-box flex flex-col justify-center items-center">
+                <h2 className="flex font-bold">{experience.company}</h2>
+                <p className=" flex">{experience.designation}</p>
                 {/* <p>{experience.description}</p> */}
               </div>
               <hr />

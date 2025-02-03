@@ -15,6 +15,8 @@ import Modal from "../Utils/Modal";
 import EducationModal from "./profilesection/EducationModal";
 import ExperienceModal from "./profilesection/ExperienceModal";
 import SkillsModal from "./profilesection/SkillsModal";
+import About from "./profilesection/About";
+import AboutModal from "./profilesection/AboutModal";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -36,6 +38,8 @@ const Profile = () => {
     "designation",
     "education",
     "experiance",
+    "gitHubURL",
+    "instagramURL",
   ];
   const handleOnSave = (x) => {
     console.log(x);
@@ -113,6 +117,25 @@ const Profile = () => {
         // const skillsData = responseData?.data["skills"].map((skill) => {
         //   return { value: skill, label: skill };
         // });
+        const experianceData = responseData?.data["experiance"];
+        console.log(responseData?.data);
+        if (experianceData?.length > 0) {
+          const sortData = experianceData?.sort((a, b) => {
+            return (
+              new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
+            );
+          });
+          clonedData["experiance"] = sortData;
+        }
+        const educationData = responseData?.data["education"];
+        if (educationData?.length > 0) {
+          const sortEduData = educationData?.sort((a, b) => {
+            return (
+              new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
+            );
+          });
+          clonedData["education"] = sortEduData;
+        }
         setProfileInfo(clonedData);
       } else {
         dispatch(
@@ -151,14 +174,30 @@ const Profile = () => {
   // }
   return (
     <div className="w-[95%] h-[85%] flex flex-col border-[1px] rounded-xl  shadow-lg overflow-y-auto max-h-[85%]">
-      <Header
-        photoURL={profileInfo?.photoURL}
-        about={profileInfo?.about}
-        firstName={profileInfo?.firstName}
-        lastName={profileInfo?.lastName}
-        companyName={profileInfo?.company}
-        designation={profileInfo?.designation}
-      />
+      {profileInfo && (
+        <Header
+          photoURL={profileInfo?.photoURL}
+          about={profileInfo?.about}
+          firstName={profileInfo?.firstName}
+          lastName={profileInfo?.lastName}
+          companyName={profileInfo?.experiance[0]?.company}
+          designation={profileInfo?.experiance[0]?.designation}
+          gitHubURL={profileInfo?.gitHubURL}
+          instagramURL={profileInfo?.instagramURL}
+        />
+      )}
+      <div className="w-full h-full flex flex-col gap-3 p-8">
+        <div className="flex justify-between items-center ">
+          <h2 className="text-2xl font-semibold mb-3">About</h2>
+          <button
+            className="border-[1px] p-2  hover:bg-gray-600 transition-all"
+            onClick={() => dispatch(openModal("About"))}
+          >
+            About
+          </button>
+        </div>
+        <About about={profileInfo?.about} />
+      </div>
       <div className="w-full h-full flex flex-col gap-3 p-8">
         <div className="flex justify-between items-center ">
           <h2 className="text-2xl font-semibold mb-3">Education</h2>
@@ -222,6 +261,17 @@ const Profile = () => {
                 return (
                   <SkillsModal
                     skillsDetails={profileInfo?.skills}
+                    onSave={handleOnSave}
+                  />
+                );
+              case "About":
+                return (
+                  <AboutModal
+                    firstName={profileInfo?.firstName}
+                    lastName={profileInfo?.lastName}
+                    about={profileInfo?.about}
+                    gitHubURL={profileInfo?.gitHubURL}
+                    instagramURL={profileInfo?.instagramURL}
                     onSave={handleOnSave}
                   />
                 );
