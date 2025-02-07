@@ -70,7 +70,9 @@ const Education = ({ educationDetails }) => {
                 </svg>
               </div>
               <div className="timeline-end timeline-box items-center justify-center flex flex-col">
-                <h2 className="fle font-bold text-lg">{educationInfo.institution}</h2>
+                <h2 className="fle font-bold text-lg">
+                  {educationInfo.institution}
+                </h2>
                 <p className="flex text-sm">{educationInfo?.degree}</p>
                 <p className="flex text-sm">{educationInfo?.fieldOfStudy}</p>
               </div>

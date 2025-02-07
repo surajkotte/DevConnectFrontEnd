@@ -173,7 +173,7 @@ const Profile = () => {
   //   return <Loader />;
   // }
   return (
-    <div className="w-[95%] h-[85%] flex flex-col border-[1px] rounded-xl  shadow-lg overflow-y-auto max-h-[85%]">
+    <div className="w-[95%] h-full flex flex-col border-[1px] rounded-xl  shadow-lg overflow-y-auto max-h-[85%]">
       {profileInfo && (
         <Header
           photoURL={profileInfo?.photoURL}

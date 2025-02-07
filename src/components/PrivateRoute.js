@@ -1,14 +1,14 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { addUserData } from "../reduxSlice/userSlice";
-import Loader from "../Utils/loader";
 import Login from "./Login";
 import { hideLoader, showLoader } from "../reduxSlice/loaderSlice";
 import { addToast } from "../reduxSlice/ToastSlice";
 const PrivateRoute = ({ children }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const user = useSelector((store) => store.user);
   const loader = useSelector((store) => store.loader);
   const fetchUser = async () => {
@@ -19,25 +19,25 @@ const PrivateRoute = ({ children }) => {
         credentials: "include",
       });
       const responseData = await res.json();
-      responseData + " in PrivateRoute";
       if (responseData?.messageType == "S") {
         dispatch(addUserData(responseData?.data));
+        console.log(" in private");
       } else {
         //dispatch(addToast({ messageType: "E", message: responseData.message }));
         navigate("/login");
       }
     } catch (err) {
       dispatch(addToast({ messageType: "E", message: err.message }));
+      console.log(" in private");
       navigate("/login");
     } finally {
       dispatch(hideLoader());
     }
   };
   useEffect(() => {
-    if (!user) {
-      fetchUser();
-    }
-  }, []);
+    console.log("in privateroute");
+    fetchUser();
+  }, [location.pathname]);
   return user ? (
     <div className="w-full h-full flex flex-col">{children}</div>
   ) : (

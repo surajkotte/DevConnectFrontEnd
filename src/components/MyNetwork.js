@@ -41,7 +41,7 @@ const UserConnectionInfo = ({ userInfo, isOpen, toggleAccordion }) => {
       </div>
 
       {isOpen && (
-        <div className="flex flex-col gap-2 w-full overflow-hidden transition-all duration-300 p-3 rounded-lg max-h-40 overflow-y-auto">
+        <div className="flex flex-col gap-2 w-full overflow-hidden transition-all duration-700 transform p-3 rounded-lg max-h-40 overflow-y-auto">
           {/* About Section */}
           {userInfo?.about && (
             <div>

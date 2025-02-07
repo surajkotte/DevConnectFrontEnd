@@ -1,9 +1,12 @@
-import React from 'react'
-
+import React from "react";
+import ChatUsers from "./chatSection/ChatUsers";
+import MessageScreen from "./chatSection/MessageScreen";
 const Chat = () => {
   return (
-    <div>Chat</div>
-  )
-}
+    <div className="w-full h-full justify-center flex items-center">
+      <ChatUsers />
+    </div>
+  );
+};
 
-export default Chat
+export default Chat;

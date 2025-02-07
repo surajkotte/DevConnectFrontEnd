@@ -11,7 +11,7 @@ const Header = ({
   instagramURL,
 }) => {
   return (
-    <div className=" flex justify-between shadow-lg rounded-lg p-8">
+    <div className=" flex justify-between rounded-lg p-8">
       <div className="flex flex-col md:flex-row items-center gap-8">
         <div className="avatar">
           <div className="ring-4 ring-primary ring-offset-2 ring-offset-base-100 w-36 h-36 rounded-full overflow-hidden transform transition-all ">
@@ -30,9 +30,9 @@ const Header = ({
             {firstName} {lastName}
           </h1>
           {designation && (
-            <p className="text-xl mt-2 font-medium">{designation}</p>
+            <p className="text-xl font-medium">{designation}</p>
           )}
-          {companyName && <p className="text-lg mt-1">{companyName}</p>}
+          {companyName && <p className="text-lg">{companyName}</p>}
         </div>
       </div>
       {/* {about && (

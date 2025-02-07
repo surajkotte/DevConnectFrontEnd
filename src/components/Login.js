@@ -10,12 +10,10 @@ import { addToast } from "../reduxSlice/ToastSlice";
 const Login = () => {
   const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    mail, password;
     try {
       const res = await fetch("http://localhost:3000/login", {
         method: "POST",
@@ -29,15 +27,13 @@ const Login = () => {
         credentials: "include",
       });
       const responseData = await res.json();
-      responseData.status;
       if (responseData["messageType"] == "E") {
         dispatch(
           addToast({ message: responseData?.message, messageType: "E" })
         );
       } else if (responseData["messageType"] == "S") {
-        dispatch(
-          addToast({ message: responseData?.message, messageType: "S" })
-        );
+        dispatch(addUserData(responseData?.data));
+        dispatch(addToast({ message: "Login Successful", messageType: "S" }));
         navigate("/dashboard");
       }
     } catch (err) {
