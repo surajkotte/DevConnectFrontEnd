@@ -63,7 +63,12 @@ const MessageScreen = ({ userData }) => {
     const socket = createSocket();
     socket.emit("startConnection", { firstName, lastName, connectionId });
     socket.on("messageReceived", ({ latestMessage }) => {
-      setMessagesData((prevMessage) => [...prevMessage, latestMessage]);
+      console.log(latestMessage);
+      if (messagesData.length > 0) {
+        setMessagesData((prevMessage) => [...prevMessage, latestMessage]);
+      } else {
+        setMessagesData([latestMessage]);
+      }
     });
   }, []);
   useEffect(() => {
