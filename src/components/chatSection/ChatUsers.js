@@ -66,7 +66,7 @@ const ChatUsers = () => {
                   <UserCard
                     profileURL={info.photoURL}
                     name={info.firstName + " " + info.lastName}
-                    key={info?._id + index}
+                    // key={info?._id + index}
                   />
                 </button>
               );

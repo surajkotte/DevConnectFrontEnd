@@ -3,6 +3,8 @@ import { ChatBubble } from "./ChatBubble";
 import SendIcon from "@mui/icons-material/Send";
 import { useDispatch, useSelector } from "react-redux";
 import { addToast } from "../../reduxSlice/ToastSlice";
+import createSocket from "../../Utils/socket";
+import socket from "../../Utils/socket";
 const MessageScreen = ({ userData }) => {
   const [messagesData, setMessagesData] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
@@ -23,32 +25,47 @@ const MessageScreen = ({ userData }) => {
     console.log(messagesData);
   };
   const onSendClick = async () => {
-    const messageObject = {
+    // const messageObject = {
+    // from: user?._id,
+    // to: _id,
+    // message: inputMessage,
+    // };
+    // try {
+    //   const messageRes = await fetch(
+    //     `${"http://localhost:3000/sendMessage/"}${connectionId}`,
+    //     {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify({
+    //         ...messageObject,
+    //       }),
+    //       credentials: "include",
+    //     }
+    //   );
+    //   const messageResponse = await messageRes.json();
+    //   dispatch(addToast({ messageType: "S", message: "Sent Successfully" }));
+    //   setInputMessage("");
+    // } catch (err) {
+    //   dispatch(addToast({ messageType: "E", message: err.message }));
+    // }
+    const socket = createSocket();
+    socket.emit("sendMessage", {
       from: user?._id,
       to: _id,
       message: inputMessage,
-    };
-    try {
-      const messageRes = await fetch(
-        `${"http://localhost:3000/sendMessage/"}${connectionId}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            ...messageObject,
-          }),
-          credentials: "include",
-        }
-      );
-      const messageResponse = await messageRes.json();
-      dispatch(addToast({ messageType: "S", message: "Sent Successfully" }));
-      setInputMessage("");
-    } catch (err) {
-      dispatch(addToast({ messageType: "E", message: err.message }));
-    }
+      connectionId,
+    });
+    setInputMessage("");
   };
+  useEffect(() => {
+    const socket = createSocket();
+    socket.emit("startConnection", { firstName, lastName, connectionId });
+    socket.on("messageReceived", ({ latestMessage }) => {
+      setMessagesData((prevMessage) => [...prevMessage, latestMessage]);
+    });
+  }, []);
   useEffect(() => {
     fetchChat();
   }, [userData]);
@@ -76,7 +93,7 @@ const MessageScreen = ({ userData }) => {
           <>
             {messagesData.map((data, index) => {
               return (
-                <>
+                <div key={data?._id}>
                   {data?.from === user?._id ? (
                     <ChatBubble
                       key={data?._id + "" + index}
@@ -92,7 +109,7 @@ const MessageScreen = ({ userData }) => {
                       chatStatus={"chat-start"}
                     />
                   )}
-                </>
+                </div>
               );
             })}
           </>
