@@ -87,7 +87,7 @@ const Connections = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
-    <div className="flex flex-col w-[95%] h-[85%] max-h-[85%] border-[1px] rounded-2xl items-center gap-5 relative">
+    <div className="flex flex-col w-[95%] h-[85%] max-h-[85%] border-[1px] rounded-2xl items-center gap-5 relative shadow-2xl">
       {/* Tabs Section */}
       <div className="flex w-full justify-center mt-4 relative">
         <div className="flex lg:w-[40%] md:w-[60%] sm:w-[80%] h-10 rounded-3xl border-[1px] justify-between items-center p-1">

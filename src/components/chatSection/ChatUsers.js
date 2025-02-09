@@ -25,8 +25,8 @@ const ChatUsers = () => {
     fetchUsers();
   }, []);
   return (
-    <div className="flex w-[95%] h-[85%] max-h-[85%] border-[1px] rounded-2xl shadow-2xl overflow-y-auto">
-      <div className="flex flex-col w-1/4 border-[1px] h-full items-start rounded-2xl rounded-tr-[0px] rounded-br-[0px]">
+    <div className="flex w-[95%] h-[85%] max-h-[725px] border-[1px] rounded-2xl shadow-2xl overflow-hidden ">
+      <div className="flex flex-col w-1/3 border-[1px] h-full items-start rounded-2xl rounded-tr-[0px] rounded-br-[0px] overflow-hidden">
         <div className="flex justify-between items-center w-full h-16 p-4">
           <span className="flex font-semibold text-xl">Chats</span>
           <div className="flex">
@@ -52,16 +52,17 @@ const ChatUsers = () => {
             </svg>
           </label>
         </div>
-        <div className="w-full flex flex-col p-1 justify-center gap-3">
+        <div className="w-full flex flex-col h-[calc(100%-128px)] p-2 gap-3 overflow-y-auto">
           {userInfo && userInfo.length > 0 ? (
             userInfo.map((info, index) => {
               return (
                 <button
-                  key={userInfo?._id}
+                  key={info?._id}
                   onClick={() => {
                     console.log("selected");
                     setSelectedUser({ info });
                   }}
+                  className="w-full"
                 >
                   <UserCard
                     profileURL={info.photoURL}
@@ -72,7 +73,9 @@ const ChatUsers = () => {
               );
             })
           ) : (
-            <span className=" font-semibold items-center">No data found</span>
+            <span className=" font-semibold flex w-full h-full justify-center items-center">
+              No data found
+            </span>
           )}
         </div>
       </div>

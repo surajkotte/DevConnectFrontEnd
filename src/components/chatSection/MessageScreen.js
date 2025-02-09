@@ -22,7 +22,6 @@ const MessageScreen = ({ userData }) => {
     });
     const messageDetails = await messages.json();
     setMessagesData(messageDetails?.data?.messages);
-    console.log(messagesData);
   };
   const onSendClick = async () => {
     // const messageObject = {
@@ -70,12 +69,16 @@ const MessageScreen = ({ userData }) => {
         setMessagesData([latestMessage]);
       }
     });
-  }, []);
+    return () => {
+      socket.disconnect();
+    };
+  }, [connectionId]);
   useEffect(() => {
+    setMessagesData([]);
     fetchChat();
   }, [userData]);
   return (
-    <div className="flex flex-col w-full h-full gap-2">
+    <div className="flex flex-col w-full h-full gap-2 max-h-[726px]">
       <div className="flex w-full h-20 justify-center gap-4 border-b-[1px]">
         <div className="flex avatar justify-center items-center p-3">
           <div className="ring-4 ring-primary ring-offset-2 ring-offset-base-100 w-16 h-16 rounded-full overflow-hidden transform transition-all ">
@@ -95,7 +98,7 @@ const MessageScreen = ({ userData }) => {
       </div>
       <div className="flex w-full h-full overflow-y-auto flex-col">
         {messagesData && messagesData.length != 0 ? (
-          <>
+          <div className=" w-full h-full">
             {messagesData.map((data, index) => {
               return (
                 <div key={data?._id}>
@@ -117,7 +120,7 @@ const MessageScreen = ({ userData }) => {
                 </div>
               );
             })}
-          </>
+          </div>
         ) : (
           <span className="flex w-full h-full justify-center items-center font-semibold">
             No chat found
