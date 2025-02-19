@@ -77,7 +77,7 @@ const EducationModal = ({ educationDetails = [], onSave }) => {
                 type="text"
                 placeholder="Institution"
                 name="institution"
-                className="input input-bordered w-full text-white"
+                className="input input-bordered w-full "
                 value={education.institution}
                 onChange={(event) => handleChange(index, event)}
               />
@@ -85,7 +85,7 @@ const EducationModal = ({ educationDetails = [], onSave }) => {
                 type="text"
                 placeholder="Degree"
                 name="degree"
-                className="input input-bordered w-full text-white"
+                className="input input-bordered w-full "
                 value={education.degree}
                 onChange={(event) => handleChange(index, event)}
               />
@@ -93,7 +93,7 @@ const EducationModal = ({ educationDetails = [], onSave }) => {
                 type="text"
                 placeholder="Field of Study"
                 name="fieldOfStudy"
-                className="input input-bordered w-full text-white"
+                className="input input-bordered w-full "
                 value={education.fieldOfStudy}
                 onChange={(event) => handleChange(index, event)}
               />
@@ -102,7 +102,7 @@ const EducationModal = ({ educationDetails = [], onSave }) => {
                   type="date"
                   placeholder="Start Year"
                   name="startDate"
-                  className="input input-bordered w-full text-white"
+                  className="input input-bordered w-full "
                   value={DateFormatter(education.startDate)}
                   onChange={(event) => handleChange(index, event)}
                 />
@@ -110,7 +110,7 @@ const EducationModal = ({ educationDetails = [], onSave }) => {
                   type="date"
                   placeholder="End Year"
                   name="endDate"
-                  className="input input-bordered w-full text-white"
+                  className="input input-bordered w-full "
                   value={DateFormatter(education.endDate)}
                   onChange={(event) => handleChange(index, event)}
                 />

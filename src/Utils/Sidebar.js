@@ -28,8 +28,8 @@ const Sidebar = ({ children }) => {
   console.log("in SideBar");
   const user = useSelector((store) => store.user);
   return (
-    <div className="flex h-full w-full flex-col items-center max-h-full">
-      <div className="flex w-full">
+    <div className="flex h-screen w-full flex-col items-center max-h-full">
+      <div className="flex w-full h-fit">
         <NavBar />
       </div>
       <div className="flex w-full h-full justify-center items-center">
@@ -46,26 +46,8 @@ const Sidebar = ({ children }) => {
               </Link>
             );
           })}
-          {/* <Link>
-          <HomeOutlined style={{ fontSize: "28px" }} />
-        </Link>
-        <Link>
-          <UsergroupAddOutlined style={{ fontSize: "28px" }} />
-        </Link>
-        <Link>
-          <MessageOutlined style={{ fontSize: "28px" }} />
-        </Link>
-        <Link>
-          <SettingsOutlinedIcon style={{ fontSize: "28px" }} />
-        </Link>
-        <Link>
-          <AccountCircleOutlinedIcon style={{ fontSize: "28px" }} />
-        </Link>
-        <Link>
-          <LogoutOutlinedIcon style={{ fontSize: "28px" }} />
-        </Link> */}
         </div>
-        <div className="ml-5 h-full w-full flex items-center justify-center">
+        <div className="ml-5 h-full w-full flex items-center justify-center max-h-screen">
           {children}
         </div>
       </div>

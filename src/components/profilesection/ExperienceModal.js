@@ -66,7 +66,7 @@ const ExperienceModal = ({ experianceDetails = [], onSave }) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="card w-full bg-base-100 shadow-md p-4 rounded-lg">
+            <div className="card w-full bg-base-200 shadow-md p-4 rounded-lg">
               <div className="card-body flex flex-col gap-3 relative">
                 <button
                   className="absolute top-2 right-2 text-red-500 hover:text-red-700"
@@ -78,7 +78,7 @@ const ExperienceModal = ({ experianceDetails = [], onSave }) => {
                   type="text"
                   placeholder="Company"
                   name="company"
-                  className="input input-bordered w-full text-white"
+                  className="input input-bordered w-full "
                   value={experiance.company}
                   onChange={(event) => handleChange(index, event)}
                 />
@@ -86,7 +86,7 @@ const ExperienceModal = ({ experianceDetails = [], onSave }) => {
                   type="text"
                   placeholder="Designation"
                   name="designation"
-                  className="input input-bordered w-full text-white"
+                  className="input input-bordered w-full "
                   value={experiance.designation}
                   onChange={(event) => handleChange(index, event)}
                 />
@@ -95,7 +95,7 @@ const ExperienceModal = ({ experianceDetails = [], onSave }) => {
                     type="date"
                     placeholder="Start Year"
                     name="startDate"
-                    className="input input-bordered w-full text-white"
+                    className="input input-bordered w-full "
                     value={DateFormatter(experiance.startDate)}
                     onChange={(event) => handleChange(index, event)}
                   />
@@ -103,7 +103,7 @@ const ExperienceModal = ({ experianceDetails = [], onSave }) => {
                     type="date"
                     placeholder="End Year"
                     name="endDate"
-                    className="input input-bordered w-full text-white"
+                    className="input input-bordered w-full "
                     value={DateFormatter(experiance.endDate)}
                     onChange={(event) => handleChange(index, event)}
                   />

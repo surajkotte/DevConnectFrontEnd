@@ -96,8 +96,8 @@ const Connections = () => {
               key={tab}
               className={`flex-1 flex justify-center items-center rounded-3xl cursor-pointer ${
                 activeTab === tab
-                  ? "bg-blue-500 text-white"
-                  : "bg-transparent text-white"
+                  ? "bg-blue-500 text-grey"
+                  : "bg-transparent text-grey"
               }`}
               onClick={() => setActiveTab(tab)}
             >

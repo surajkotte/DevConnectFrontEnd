@@ -47,7 +47,7 @@ const AboutModal = ({
             type="text"
             placeholder="Last Name"
             name="firstName"
-            className="flex input input-bordered w-full text-white"
+            className="flex input input-bordered w-full "
             value={about1.firstName}
             onChange={(event) => handleChange(event)}
           />
@@ -55,7 +55,7 @@ const AboutModal = ({
             type="text"
             placeholder="First Name"
             name="lastName"
-            className="input input-bordered w-full text-white"
+            className="input input-bordered w-full "
             value={about1.lastName}
             onChange={(event) => handleChange(event)}
           />
@@ -63,7 +63,7 @@ const AboutModal = ({
             type="url"
             placeholder="gitHub Url"
             name="gitHubURL"
-            className="input input-bordered w-full text-white"
+            className="input input-bordered w-full "
             value={about1.gitHubURL}
             onChange={(event) => handleChange(event)}
           />
@@ -71,14 +71,14 @@ const AboutModal = ({
             type="url"
             placeholder="instagram Account"
             name="instagramURL"
-            className="input input-bordered w-full text-white"
+            className="input input-bordered w-full "
             value={about1.instagramURL}
             onChange={(event) => handleChange(event)}
           />
           <textarea
             placeholder="About"
             name="about"
-            className="flex input input-bordered w-full text-white min-h-60 max-h-60"
+            className="flex input input-bordered w-full min-h-60 max-h-60"
             value={about1.about}
             onChange={(event) => handleChange(event)}
           />

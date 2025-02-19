@@ -49,12 +49,12 @@ const Login = () => {
         <div className="flex justify-center self-center z-10 w-full max-w-lg">
           <div className="p-12 bg-stone-500 mx-auto rounded-2xl bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-5 border border-gray-100">
             <div className="mb-4">
-              <h3 className="font-semibold text-2xl text-white">Sign In</h3>
-              <p className="text-white">Please sign in to your account.</p>
+              <h3 className="font-semibold text-2xl ">Sign In</h3>
+              <p className="">Please sign in to your account.</p>
             </div>
             <div className="space-y-5">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-white tracking-wide">
+                <label className="text-sm font-medium tracking-wide">
                   Email
                 </label>
                 <input
@@ -66,7 +66,7 @@ const Login = () => {
                 />
               </div>
               <div className="space-y-2">
-                <label className="mb-5 text-sm font-medium text-white tracking-wide">
+                <label className="mb-5 text-sm font-medium  tracking-wide">
                   Password
                 </label>
                 <input
