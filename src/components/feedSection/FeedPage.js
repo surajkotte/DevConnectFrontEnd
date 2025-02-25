@@ -1,34 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Card } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { showLoader, hideLoader } from "../../reduxSlice/loaderSlice";
 import {
   PhotoCameraOutlined,
   VideocamOutlined,
   AccountTreeOutlined,
   ArticleOutlined,
 } from "@mui/icons-material";
+import { addToast } from "../../reduxSlice/ToastSlice";
+import Modal from "../../Utils/Modal";
+import { MediaModals } from "./MediaModals";
+import { openModal } from "../../reduxSlice/modalSlice";
+import FeedContent from "./FeedContent";
 
 const FeedPage = () => {
   const user = useSelector((store) => store.user);
-  const text = `SAP Business Technology Platform (BTP) is a cloud-based platform that provides integrated solutions for database management, analytics, application development, integration, and AI services. It enables businesses to extend, integrate, and innovate their SAP and non-SAP applications efficiently. SAP BTP consists of four main pillars:
-1️⃣ Database & Data Management
-SAP HANA Cloud → In-memory database for real-time data processing
-SAP Data Warehouse Cloud → Centralized data warehousing solution
-SAP IQ → High-performance analytics database
-SAP Datasphere → Unified data fabric for enterprise-wide insights
-2️⃣ Analytics & Planning
-SAP Analytics Cloud (SAC) → Provides business intelligence (BI), planning, and predictive analytics
-SAP Data Intelligence → Manages and processes large-scale data
-3️⃣ Application Development & Integration
-SAP Business Application Studio → A cloud-based IDE for developing SAP Fiori/UI5 and CAP applications
-SAP Integration Suite → Connects SAP and third-party applications
-SAP Extension Suite → Helps in extending SAP applications using microservices and APIs
-SAP Mobile Services → Develops mobile-first applications
-4️⃣ Artificial Intelligence (AI), IoT, & Automation
-SAP AI Core & AI Foundation → Helps in integrating AI/ML models into applications
-SAP Internet of Things (IoT) → Enables IoT data processing
-SAP RPA (Robotic Process Automation) → Automates repetitive business tasks`;
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [preview, setPreview] = useState("");
+  const [feedData, setFeedData] = useState("");
   const buttonsArray = [
     {
       name: "Photo",
@@ -44,6 +34,35 @@ SAP RPA (Robotic Process Automation) → Automates repetitive business tasks`;
     },
     { name: "Article", icon: <ArticleOutlined /> },
   ];
+  const dispatch = useDispatch();
+  const handleModal = (event) => {
+    dispatch(openModal("Image"));
+  };
+  const fetchFeedContent = async () => {
+    try {
+      dispatch(showLoader());
+      const data = await fetch("http://localhost:3000/aws/getFeed", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      const responseData = await data.json();
+      if (responseData.messageType == "S") {
+        setFeedData(responseData.data);
+      } else if (responseData.messageType == "E") {
+        dispatch(addToast({ messageType: "E", message: responseData.message }));
+      }
+    } catch (err) {
+      dispatch(addToast({ messageType: "E", message: err.message }));
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+  useEffect(() => {
+    fetchFeedContent();
+  }, []);
   return (
     <div className="flex flex-col items-center w-full h-full gap-5 bg-gray-100 overflow-y-auto max-h-screen">
       <Card
@@ -72,7 +91,26 @@ SAP RPA (Robotic Process Automation) → Automates repetitive business tasks`;
 
         {/* Post Options */}
         <div className="flex justify-around mt-3 border-t border-gray-200 pt-3">
-          <button className="flex items-center gap-2 text-gray-600 hover:text-blue-500">
+          {/* <input
+            type="file"
+            id="fileInput"
+            accept="image/*"
+            className="hidden"
+            onChange={handleFileSelect}
+          /> */}
+          <Modal
+            maxWidth={"md"}
+            key="Education"
+            uniqueKey={"Image"}
+            closeOnOutsideClick={true}
+          >
+            <MediaModals mediaType={"Image"} />
+          </Modal>
+          <button
+            className="flex items-center gap-2 text-gray-600 hover:text-blue-500"
+            // onClick={() => document.getElementById("fileInput").click()}
+            onClick={() => handleModal()}
+          >
             <PhotoCameraOutlined />
             <span>Photo</span>
           </button>
@@ -90,7 +128,7 @@ SAP RPA (Robotic Process Automation) → Automates repetitive business tasks`;
           </button>
         </div>
       </Card>
-      <div className="w-full max-w-xl bg-white border border-gray-300 rounded-xl shadow-lg">
+      {/* <div className="w-full max-w-xl bg-white border border-gray-300 rounded-xl shadow-lg">
         <div className="flex items-center gap-3 p-2 ">
           <div className="w-12 h-12 rounded-full overflow-hidden">
             <img
@@ -132,7 +170,22 @@ SAP RPA (Robotic Process Automation) → Automates repetitive business tasks`;
             }
           ></img>
         </div>
-      </div>
+      </div> */}
+      {feedData && feedData.length != 0 ? (
+        feedData.map((data) => {
+          return (
+            <>
+              <FeedContent
+                user={data.userId}
+                feedObject={data.feedContent}
+                key={data._id}
+              />
+            </>
+          );
+        })
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

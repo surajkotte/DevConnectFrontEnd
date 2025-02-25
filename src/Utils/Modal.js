@@ -31,9 +31,8 @@ export default function Modal({
       }}
     >
       {title && <DialogTitle>{title}</DialogTitle>}
-      <DialogContent style={{ backgroundColor: "#0f1114" }}>
-        {children}
-      </DialogContent>
+      {/* <DialogContent style={{ backgroundColor: "#0f1114" }}> */}
+      <DialogContent>{children}</DialogContent>
     </Dialog>
   );
 }

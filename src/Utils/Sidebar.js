@@ -47,7 +47,7 @@ const Sidebar = ({ children }) => {
             );
           })}
         </div>
-        <div className="ml-5 h-full w-full flex items-center justify-center max-h-screen">
+        <div className="ml-5 h-full w-full flex items-center justify-center max-h-[854px]">
           {children}
         </div>
       </div>
