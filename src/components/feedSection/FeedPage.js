@@ -9,14 +9,16 @@ import {
   AccountTreeOutlined,
   ArticleOutlined,
 } from "@mui/icons-material";
+import multiApiCalls from "../../Utils/multiApiCalls";
+import { SlCamera, SlCamrecorder, SlOrganization } from "react-icons/sl";
+import { PiArticleLight } from "react-icons/pi";
 import { addToast } from "../../reduxSlice/ToastSlice";
 import Modal from "../../Utils/Modal";
 import { MediaModals } from "./MediaModals";
 import { openModal } from "../../reduxSlice/modalSlice";
 import FeedContent from "./FeedContent";
 
-const FeedPage = () => {
-  const user = useSelector((store) => store.user);
+const FeedPage = ({ user }) => {
   const [preview, setPreview] = useState("");
   const [feedData, setFeedData] = useState("");
   const buttonsArray = [
@@ -41,14 +43,19 @@ const FeedPage = () => {
   const fetchFeedContent = async () => {
     try {
       dispatch(showLoader());
-      const data = await fetch("http://localhost:3000/aws/getFeed", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
-      const responseData = await data.json();
+      const responseData = await multiApiCalls([
+        "http://localhost:3000/aws/getFeed",
+        "http://localhost:3000/feed/countInfo",
+      ]);
+      console.log(responseData);
+      // const data = await fetch("http://localhost:3000/aws/getFeed", {
+      //   method: "GET",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   credentials: "include",
+      // });
+      // const responseData = await data.json();
       if (responseData.messageType == "S") {
         setFeedData(responseData.data);
       } else if (responseData.messageType == "E") {
@@ -64,13 +71,15 @@ const FeedPage = () => {
     fetchFeedContent();
   }, []);
   return (
-    <div className="flex flex-col items-center w-full h-full gap-5 bg-gray-100 overflow-y-auto max-h-screen">
+    <div
+      className="flex flex-col items-center w-full h-full gap-5 overflow-y-auto max-h-screen"
+      key={user?._id}
+    >
       <Card
         className="w-full max-w-xl p-4 bg-white border border-gray-300 shadow-lg rounded-xl mt-2"
-        style={{ minHeight: "150px" }}
+        style={{ minHeight: "130px" }}
       >
         <div className="flex items-center gap-3">
-          {/* User Profile Image */}
           <div className="w-12 h-12 rounded-full overflow-hidden">
             <img
               src={
@@ -81,7 +90,6 @@ const FeedPage = () => {
             />
           </div>
 
-          {/* Post Input */}
           <input
             type="text"
             placeholder="Create post"
@@ -89,15 +97,7 @@ const FeedPage = () => {
           />
         </div>
 
-        {/* Post Options */}
-        <div className="flex justify-around mt-3 border-t border-gray-200 pt-3">
-          {/* <input
-            type="file"
-            id="fileInput"
-            accept="image/*"
-            className="hidden"
-            onChange={handleFileSelect}
-          /> */}
+        <div className="flex justify-around mt-2 border-t border-gray-200 pt-3">
           <Modal
             maxWidth={"md"}
             key="Education"
@@ -111,19 +111,22 @@ const FeedPage = () => {
             // onClick={() => document.getElementById("fileInput").click()}
             onClick={() => handleModal()}
           >
-            <PhotoCameraOutlined />
+            <SlCamera className="h-5 w-5" />
             <span>Photo</span>
           </button>
           <button className="flex items-center gap-2 text-gray-600 hover:text-green-500">
-            <VideocamOutlined />
+            {/* <VideocamOutlined /> */}
+            <SlCamrecorder className="h-5 w-5" />
             <span>Video</span>
           </button>
           <button className="flex items-center gap-2 text-gray-600 hover:text-purple-500">
-            <AccountTreeOutlined />
+            {/* <AccountTreeOutlined /> */}
+            <SlOrganization className="h-5 w-5" />
             <span>Project</span>
           </button>
           <button className="flex items-center gap-2 text-gray-600 hover:text-orange-500">
-            <ArticleOutlined />
+            {/* <ArticleOutlined /> */}
+            <PiArticleLight className="h-5 w-5" />
             <span>Article</span>
           </button>
         </div>
@@ -172,12 +175,15 @@ const FeedPage = () => {
         </div>
       </div> */}
       {feedData && feedData.length != 0 ? (
-        feedData.map((data) => {
+        feedData.map((data, index) => {
           return (
             <>
               <FeedContent
                 user={data.userId}
+                loginUser={user}
                 feedObject={data.feedContent}
+                feedId={data?._id}
+                feedEngagement={data?.feedapi}
                 key={data._id}
               />
             </>

@@ -1,35 +1,80 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import ThumbDownIcon from "@mui/icons-material/ThumbDown";
-import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
-import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
-import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
-const FeedContent = ({ user, feedObject }) => {
+import { SlLike, SlDislike, SlBubble, SlCursor } from "react-icons/sl";
+import { CiFaceSmile } from "react-icons/ci";
+import { Avatar, Badge, Space } from "antd";
+import FeedComments from "./FeedComments";
+const FeedContent = ({
+  user,
+  loginUser,
+  feedObject,
+  feedId,
+  feedEngagement,
+}) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [commentText, setCommentText] = useState("");
   const [actionClicked, setActionClicked] = useState({
     likeClicked: false,
+    likeCount: 0,
     dislikeClicked: false,
+    dislikeCount: 0,
     commentsClicked: false,
+    commentCount: 0,
     sendClicked: false,
   });
+  const [commentData, setCommentData] = useState("");
   const text = feedObject?.contentText;
   const mediaUrl = feedObject?.contentURL;
   const likeAction = async (action) => {
-    console.log(feedObject);
     try {
-      const url = `http://localhost:3000/feed/${action}/${feedObject?._id}`;
+      const url = `http://localhost:3000/feed/${action}/${feedId}`;
       const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ userId: user?._id }),
+        body: JSON.stringify({ userId: loginUser?._id, comments: commentText }),
         credentials: "include",
       });
-    } catch (err) {}
+      const responseData = await response.json();
+      if (responseData?.messageType == "S" && action == "comment") {
+        setCommentText("");
+      }
+    } catch (err) {
+    } finally {
+    }
   };
+  useEffect(() => {
+    const isLikeClicked = feedEngagement?.data?.like.find(
+      (info) => info.userId._id.toString() == loginUser?._id
+    );
+    const isDisLikeClicked = feedEngagement?.data?.dislike.find(
+      (info) => info.userId._id.toString() == loginUser?._id
+    );
+    setActionClicked((prev) => ({
+      ...prev,
+      likeCount: feedEngagement?.data ? feedEngagement?.data?.likeCount : 0,
+      dislikeCount: feedEngagement?.data
+        ? feedEngagement?.data?.dislikeCount
+        : 0,
+      commentCount: feedEngagement?.data
+        ? feedEngagement?.data?.commentCount
+        : 0,
+      likeClicked: isLikeClicked ? true : false,
+      dislikeClicked: isDisLikeClicked ? true : false,
+    }));
+    const commentsData = feedEngagement?.data?.comments?.map((commentInfo) => {
+      return {
+        comment: {
+          commentText: commentInfo?.comment?.commentText,
+          createdTime: commentInfo?.comment?.createdAt,
+          userId: commentInfo?.comment?.userId,
+        },
+        reply: commentInfo?.reply,
+      };
+    });
+    setCommentData(commentsData);
+  }, [feedObject, feedId, feedEngagement]);
   return (
     <div className="w-full max-w-xl bg-white border border-gray-300 rounded-xl shadow-lg">
       <div className="flex items-center gap-3 p-2 ">
@@ -74,38 +119,63 @@ const FeedContent = ({ user, feedObject }) => {
               : "https://learning.sap-press.com/hs-fs/hubfs/image-png-Aug-29-2024-02-31-27-0426-PM.png?width=992&height=861&name=image-png-Aug-29-2024-02-31-27-0426-PM.png"
           }`}
           className="p-2"
+          loading="lazy"
         ></img>
       </div>
-      <div className="w-full border-[1px]"></div>
-      <div className="flex justify-around h-11">
+      <div className="flex justify-between p-4 text-sm text-gray-600 border-t border-gray-200">
+        <div className="flex gap-2">
+          <span>{actionClicked.likeCount} likes</span>
+          <span>{actionClicked.dislikeCount} Dislikes</span>
+        </div>
+        <span>{actionClicked?.commentCount + " "} Comments</span>
+      </div>
+      <div className="flex justify-around py-3 border-t border-gray-200">
         <button
           onClick={() => {
             setActionClicked((prev) => ({
               ...prev,
+              likeCount:
+                prev.likeClicked && prev.likeCount != 0
+                  ? prev.likeCount - 1
+                  : prev.likeCount + 1,
               likeClicked: !prev.likeClicked,
+              dislikeCount:
+                prev.dislikeClicked && prev.dislikeCount != 0
+                  ? prev.dislikeCount - 1
+                  : prev.dislikeCount,
+              dislikeClicked: false,
             }));
             likeAction("like");
           }}
         >
           {actionClicked?.likeClicked ? (
-            <ThumbUpIcon className=" text-blue-500" />
+            <SlLike className=" text-blue-500 h-5 w-5" />
           ) : (
-            <ThumbUpOutlinedIcon className=" hover:text-blue-500" />
+            <SlLike className=" hover:text-blue-500 h-5 w-5" />
           )}
         </button>
         <button
           onClick={() => {
             setActionClicked((prev) => ({
               ...prev,
+              likeCount:
+                prev.likeClicked && prev.likeCount != 0
+                  ? prev.likeCount - 1
+                  : prev?.likeCount,
+              likeClicked: false,
+              dislikeCount:
+                prev.dislikeClicked == false
+                  ? prev?.dislikeCount + 1
+                  : prev.dislikeCount - 1,
               dislikeClicked: !prev.dislikeClicked,
             }));
             likeAction("dislike");
           }}
         >
           {actionClicked?.dislikeClicked ? (
-            <ThumbDownIcon />
+            <SlDislike className="text-red-500 h-5 w-5" />
           ) : (
-            <ThumbDownOutlinedIcon className=" hover:text-blue-500" />
+            <SlDislike className=" hover:text-red-500 h-5 w-5" />
           )}
         </button>
         <button
@@ -116,7 +186,7 @@ const FeedContent = ({ user, feedObject }) => {
             }));
           }}
         >
-          <CommentOutlinedIcon className=" hover:text-blue-500" />
+          <SlBubble className=" hover:text-blue-500 h-5 w-5" />
         </button>
         <button
           onClick={() => {
@@ -126,9 +196,76 @@ const FeedContent = ({ user, feedObject }) => {
             }));
           }}
         >
-          <SendOutlinedIcon className=" hover:text-blue-500" />
+          <SlCursor className=" hover:text-blue-500 h-5 w-5" />
         </button>
       </div>
+      <div className={`w-full flex flex-col justify-center items-center`}>
+        {actionClicked?.commentsClicked && (
+          <>
+            <div
+              className={`w-[90%] ${
+                commentText ? "flex-col" : "flex"
+              } justify-center items-center transition-all border-blue-400 mb-2 outline-2 border-[2px] rounded-3xl p-2 max-h-96`}
+            >
+              <input
+                type="text"
+                placeholder="Type here"
+                className="min-h-10 w-full outline-none"
+                value={commentText}
+                onChange={(e) => setCommentText(e.target.value)}
+              />
+              <div className="flex items-center justify-between gap-2">
+                <button>
+                  <CiFaceSmile size={"28px"} />
+                </button>
+                {commentText && (
+                  <button
+                    className="btn btn-sm btn-primary"
+                    size={"small"}
+                    onClick={() => {
+                      setActionClicked((prev) => ({
+                        ...prev,
+                        commentCount: prev?.commentCount + 1,
+                      }));
+                      setCommentData((prev = []) => [
+                        ...prev,
+                        {
+                          comment: {
+                            commentText: commentText,
+                            createdTime: new Date(),
+                            userId: {
+                              _id: loginUser?._id,
+                              firstName: loginUser?.firstName,
+                              lastName: loginUser?.lastName,
+                              photoURL: loginUser?.photoURL,
+                            },
+                          },
+                          reply: [],
+                        },
+                      ]);
+                      likeAction("comment");
+                    }}
+                  >
+                    comment
+                  </button>
+                )}
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+      {actionClicked?.commentsClicked &&
+        commentData &&
+        commentData.length != 0 &&
+        commentData?.map((data, index) => {
+          {
+            return (
+              <div className="p-2" key={index + " commentsInfo"}>
+                <FeedComments commentInfo={data?.comment} />
+              </div>
+            );
+          }
+        })}
     </div>
   );
 };
