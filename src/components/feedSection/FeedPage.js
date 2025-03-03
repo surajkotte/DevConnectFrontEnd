@@ -47,7 +47,6 @@ const FeedPage = ({ user }) => {
         "http://localhost:3000/aws/getFeed",
         "http://localhost:3000/feed/countInfo",
       ]);
-      console.log(responseData);
       // const data = await fetch("http://localhost:3000/aws/getFeed", {
       //   method: "GET",
       //   headers: {
@@ -67,14 +66,14 @@ const FeedPage = ({ user }) => {
       dispatch(hideLoader());
     }
   };
+  const updateFeed = (data) => {
+    setFeedData((prev) => [data, ...prev]);
+  };
   useEffect(() => {
     fetchFeedContent();
-  }, []);
+  }, [user]);
   return (
-    <div
-      className="flex flex-col items-center w-full h-full gap-5 overflow-y-auto max-h-screen"
-      key={user?._id}
-    >
+    <div className="flex flex-col items-center w-full h-full gap-5 overflow-y-auto max-h-screen">
       <Card
         className="w-full max-w-xl p-4 bg-white border border-gray-300 shadow-lg rounded-xl mt-2"
         style={{ minHeight: "130px" }}
@@ -104,7 +103,7 @@ const FeedPage = ({ user }) => {
             uniqueKey={"Image"}
             closeOnOutsideClick={true}
           >
-            <MediaModals mediaType={"Image"} />
+            <MediaModals mediaType={"Image"} updateFeedContent={updateFeed} />
           </Modal>
           <button
             className="flex items-center gap-2 text-gray-600 hover:text-blue-500"
@@ -190,7 +189,9 @@ const FeedPage = ({ user }) => {
           );
         })
       ) : (
-        <></>
+        <div className="w-full h-full flex justify-center items-center">
+          No Feed available
+        </div>
       )}
     </div>
   );

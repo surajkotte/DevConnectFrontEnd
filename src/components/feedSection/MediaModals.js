@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "../../reduxSlice/modalSlice";
 import { showLoader, hideLoader } from "../../reduxSlice/loaderSlice";
 import { addToast } from "../../reduxSlice/ToastSlice";
-export const MediaModals = ({ mediaType }) => {
+export const MediaModals = ({ mediaType, updateFeedContent }) => {
   const [preview, setPreview] = useState("");
   const [infoObject, setInfoObject] = useState({ text: "", file: "" });
   const dispatch = useDispatch();
@@ -40,6 +40,17 @@ export const MediaModals = ({ mediaType }) => {
       if (responseData.messageType == "S") {
         dispatch(addToast({ messageType: "S", message: "Upload Successful" }));
         dispatch(closeModal());
+        updateFeedContent({
+          _id: responseData?.data?._id,
+          feedContent: responseData?.data?.feedContent,
+          feedapi: { messageType: "S", data: null },
+          userId: {
+            _id: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            photoURL: user.photoURL,
+          },
+        });
       } else if (responseData.messageType == "E") {
         dispatch(
           addToast({ messageType: "E", message: responseData?.message })
@@ -47,7 +58,6 @@ export const MediaModals = ({ mediaType }) => {
         dispatch(closeModal());
       }
     } catch (err) {
-      console.log(err);
       dispatch(hideLoader());
       dispatch(addToast({ messageType: "E", message: "Upload Failed" }));
     } finally {
