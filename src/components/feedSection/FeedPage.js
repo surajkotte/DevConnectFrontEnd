@@ -15,11 +15,12 @@ import { PiArticleLight } from "react-icons/pi";
 import { addToast } from "../../reduxSlice/ToastSlice";
 import Modal from "../../Utils/Modal";
 import { MediaModals } from "./MediaModals";
+import TextModal from "./TextModal";
 import { openModal } from "../../reduxSlice/modalSlice";
 import FeedContent from "./FeedContent";
 
 const FeedPage = ({ user }) => {
-  const [preview, setPreview] = useState("");
+  const [selectedAction, setSelectedAction] = useState("");
   const [feedData, setFeedData] = useState("");
   const buttonsArray = [
     {
@@ -38,7 +39,8 @@ const FeedPage = ({ user }) => {
   ];
   const dispatch = useDispatch();
   const handleModal = (event) => {
-    dispatch(openModal("Image"));
+    setSelectedAction(event);
+    dispatch(openModal(event));
   };
   const fetchFeedContent = async () => {
     try {
@@ -100,30 +102,49 @@ const FeedPage = ({ user }) => {
           <Modal
             maxWidth={"md"}
             key="Education"
-            uniqueKey={"Image"}
+            uniqueKey={selectedAction}
             closeOnOutsideClick={true}
           >
-            <MediaModals mediaType={"Image"} updateFeedContent={updateFeed} />
+            {selectedAction == "Image" || selectedAction == "Video" ? (
+              <MediaModals
+                mediaType={selectedAction}
+                updateFeedContent={updateFeed}
+              />
+            ) : (
+              <TextModal
+                mediaType={selectedAction}
+                updateFeedContent={updateFeed}
+              />
+            )}
           </Modal>
           <button
             className="flex items-center gap-2 text-gray-600 hover:text-blue-500"
             // onClick={() => document.getElementById("fileInput").click()}
-            onClick={() => handleModal()}
+            onClick={() => handleModal("Image")}
           >
             <SlCamera className="h-5 w-5" />
             <span>Photo</span>
           </button>
-          <button className="flex items-center gap-2 text-gray-600 hover:text-green-500">
+          <button
+            className="flex items-center gap-2 text-gray-600 hover:text-green-500"
+            onClick={() => handleModal("Video")}
+          >
             {/* <VideocamOutlined /> */}
             <SlCamrecorder className="h-5 w-5" />
             <span>Video</span>
           </button>
-          <button className="flex items-center gap-2 text-gray-600 hover:text-purple-500">
+          <button
+            className="flex items-center gap-2 text-gray-600 hover:text-purple-500"
+            onClick={() => handleModal("Project")}
+          >
             {/* <AccountTreeOutlined /> */}
             <SlOrganization className="h-5 w-5" />
             <span>Project</span>
           </button>
-          <button className="flex items-center gap-2 text-gray-600 hover:text-orange-500">
+          <button
+            className="flex items-center gap-2 text-gray-600 hover:text-orange-500"
+            onClick={() => handleModal("Article")}
+          >
             {/* <ArticleOutlined /> */}
             <PiArticleLight className="h-5 w-5" />
             <span>Article</span>
@@ -177,11 +198,13 @@ const FeedPage = ({ user }) => {
         feedData.map((data, index) => {
           return (
             <>
+              {console.log(data)}
               <FeedContent
                 user={data.userId}
                 loginUser={user}
                 feedObject={data.feedContent}
                 feedId={data?._id}
+                mediaType={data?.mediaType}
                 feedEngagement={data?.feedapi}
                 key={data._id}
               />

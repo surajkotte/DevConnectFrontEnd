@@ -14,7 +14,14 @@ export const MediaModals = ({ mediaType, updateFeedContent }) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = (e) => setPreview(e.target.result);
+      reader.onload = (e) => {
+        if (mediaType == "Image") {
+          setPreview(e.target.result);
+        } else if (mediaType == "Video") {
+          const url = URL.createObjectURL(file);
+          setPreview(url);
+        }
+      };
       reader.readAsDataURL(file);
       setInfoObject((prev) => ({ ...prev, file: file }));
     }
@@ -27,6 +34,7 @@ export const MediaModals = ({ mediaType, updateFeedContent }) => {
       formData.append("file", file);
       formData.append("userId", user._id);
       formData.append("details", infoObject?.text);
+      formData.append("mediaType", mediaType);
       const res = await fetch("http://localhost:3000/aws/upload", {
         method: "POST",
         // headers: {
@@ -43,6 +51,7 @@ export const MediaModals = ({ mediaType, updateFeedContent }) => {
         updateFeedContent({
           _id: responseData?.data?._id,
           feedContent: responseData?.data?.feedContent,
+          mediaType: mediaType,
           feedapi: { messageType: "S", data: null },
           userId: {
             _id: user._id,
@@ -72,7 +81,7 @@ export const MediaModals = ({ mediaType, updateFeedContent }) => {
             <input
               type="file"
               id="fileInput"
-              accept="image/*"
+              accept={`${mediaType}/*`}
               className="hidden"
               onChange={handleFileSelect}
             />
@@ -100,7 +109,23 @@ export const MediaModals = ({ mediaType, updateFeedContent }) => {
                 }}
               />
             </div>
-            <img src={preview} alt="Preview" className=" object-contain mt-2" />
+            {mediaType == "Image" ? (
+              <img
+                src={preview}
+                alt="Preview"
+                className=" object-contain mt-2"
+              />
+            ) : (
+              <video
+                width={"500"}
+                alt="Preview"
+                src={preview}
+                className=" object-contain mt-2"
+                controls
+              >
+                <source src={preview} type="video/mov" />
+              </video>
+            )}
           </div>
         )}
       </div>

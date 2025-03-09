@@ -9,6 +9,7 @@ const FeedContent = ({
   loginUser,
   feedObject,
   feedId,
+  mediaType,
   feedEngagement,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -97,30 +98,54 @@ const FeedContent = ({
       <div className="flex p-2">
         <p
           className={`text-gray-700 ${
-            isExpanded ? "" : "line-clamp-3 overflow-hidden"
+            isExpanded
+              ? ""
+              : `${
+                  mediaType == "Image" || mediaType == "Video"
+                    ? "line-clamp-3 overflow-hidden"
+                    : ""
+                }`
           } transition-all`}
         >
-          {isExpanded ? text : `${text.slice(0, 200)}... `}
-          {!isExpanded && text.length > 200 && (
-            <button
-              onClick={() => setIsExpanded(true)}
-              className="text-blue-500 hover:underline inline"
-            >
-              Read More
-            </button>
+          {mediaType == "Image" || mediaType == "Video" ? (
+            <>
+              {isExpanded ? text : `${text?.slice(0, 200)}... `}
+              {!isExpanded && text?.length > 200 && (
+                <button
+                  onClick={() => setIsExpanded(true)}
+                  className="text-blue-500 hover:underline inline"
+                >
+                  Read More
+                </button>
+              )}
+            </>
+          ) : (
+            <span dangerouslySetInnerHTML={{ __html: text }}></span>
           )}
         </p>
       </div>
       <div className="flex">
-        <img
-          src={`${
-            mediaUrl
-              ? mediaUrl
-              : "https://learning.sap-press.com/hs-fs/hubfs/image-png-Aug-29-2024-02-31-27-0426-PM.png?width=992&height=861&name=image-png-Aug-29-2024-02-31-27-0426-PM.png"
-          }`}
-          className="p-2"
-          loading="lazy"
-        ></img>
+        {mediaType == "Image" ? (
+          <img
+            src={`${
+              mediaUrl
+                ? mediaUrl
+                : "https://learning.sap-press.com/hs-fs/hubfs/image-png-Aug-29-2024-02-31-27-0426-PM.png?width=992&height=861&name=image-png-Aug-29-2024-02-31-27-0426-PM.png"
+            }`}
+            className="p-2"
+            loading="lazy"
+          ></img>
+        ) : mediaType == "Video" ? (
+          <video
+            src={`${
+              mediaUrl
+                ? mediaUrl
+                : "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample"
+            }`}
+            className="p-2"
+            controls
+          ></video>
+        ) : null}
       </div>
       <div className="flex justify-between p-4 text-sm text-gray-600 border-t border-gray-200">
         <div className="flex gap-2">
