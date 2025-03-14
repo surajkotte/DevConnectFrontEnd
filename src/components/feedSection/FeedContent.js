@@ -4,6 +4,10 @@ import { SlLike, SlDislike, SlBubble, SlCursor } from "react-icons/sl";
 import { CiFaceSmile } from "react-icons/ci";
 import { Avatar, Badge, Space } from "antd";
 import FeedComments from "./FeedComments";
+import { Send } from "lucide-react";
+import SendPost from "./SendPost";
+import { useDispatch } from "react-redux";
+import { openModal } from "../../reduxSlice/modalSlice";
 const FeedContent = ({
   user,
   loginUser,
@@ -14,6 +18,7 @@ const FeedContent = ({
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [commentText, setCommentText] = useState("");
+  const dispatch = useDispatch();
   const [actionClicked, setActionClicked] = useState({
     likeClicked: false,
     likeCount: 0,
@@ -120,7 +125,7 @@ const FeedContent = ({
               )}
             </>
           ) : (
-            <span dangerouslySetInnerHTML={{ __html: text }}></span>
+            <div dangerouslySetInnerHTML={{ __html: text }}></div>
           )}
         </p>
       </div>
@@ -215,6 +220,7 @@ const FeedContent = ({
         </button>
         <button
           onClick={() => {
+            dispatch(openModal(`sendModal${feedId}`));
             setActionClicked((prev) => ({
               ...prev,
               sendClicked: !prev.sendClicked,
@@ -291,6 +297,19 @@ const FeedContent = ({
             );
           }
         })}
+      {actionClicked?.sendClicked && (
+        <SendPost
+          modalKey={`sendModal${feedId}`}
+          key={feedId}
+          loginUserId={user?._id}
+          setActionFalse={() => {
+            setActionClicked((prev) => ({
+              ...prev,
+              sendClicked: false,
+            }));
+          }}
+        />
+      )}
     </div>
   );
 };

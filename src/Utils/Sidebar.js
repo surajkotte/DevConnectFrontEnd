@@ -66,17 +66,21 @@ import {
 import { useSelector } from "react-redux";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import NavBar from "../components/NavBar";
 
 const Sidebar = ({ children }) => {
   const icons = [
     { icon: <HomeOutlined style={{ fontSize: "28px" }} />, link: "/dashboard" },
     {
+      icon: <NotificationsNoneOutlinedIcon style={{ fontSize: "32px" }} />,
+      link: "",
+    },
+    { icon: <MessageOutlined style={{ fontSize: "28px" }} />, link: "/chat" },
+    {
       icon: <UsergroupAddOutlined style={{ fontSize: "28px" }} />,
       link: "/connections",
     },
-    { icon: <MessageOutlined style={{ fontSize: "28px" }} />, link: "/chat" },
-    { icon: <SettingsOutlinedIcon style={{ fontSize: "28px" }} />, link: "" },
     {
       icon: <AccountCircleOutlinedIcon style={{ fontSize: "28px" }} />,
       link: "/profile",

@@ -6,6 +6,8 @@ import Globe from "../Utils/Globe";
 import Particle from "../Utils/particles";
 import { useNavigate } from "react-router-dom";
 import { addToast } from "../reduxSlice/ToastSlice";
+import { useDispatch } from "react-redux";
+import { showLoader, hideLoader } from "../reduxSlice/loaderSlice";
 
 const Login = () => {
   const [mail, setMail] = useState("");
@@ -15,6 +17,7 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
+      dispatch(showLoader());
       const res = await fetch("http://localhost:3000/login", {
         method: "POST",
         headers: {
@@ -38,6 +41,8 @@ const Login = () => {
       }
     } catch (err) {
       dispatch(addToast({ message: err?.message, messageType: "E" }));
+    } finally {
+      dispatch(hideLoader());
     }
   };
 
