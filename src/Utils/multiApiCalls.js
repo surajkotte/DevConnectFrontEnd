@@ -1,4 +1,4 @@
-const makeApiCall = async (api, body) => {
+const makeApiCall = async (api) => {
   const data = await fetch(api, {
     method: "GET",
     headers: {

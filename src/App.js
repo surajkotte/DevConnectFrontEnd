@@ -22,6 +22,7 @@ import { addUserData } from "./reduxSlice/userSlice";
 import Loader from "./Utils/loader";
 import Toast from "./Utils/Toast";
 import Modal from "./Utils/Modal";
+import Notifications from "./components/Notifications";
 
 const App = () => {
   return (
@@ -55,6 +56,7 @@ const routers = createBrowserRouter([
         path: "/connections",
         element: <Connections />,
       },
+      { path: "/notifications", element: <Notifications /> },
       { path: "profile", element: <Profile /> },
     ],
   },

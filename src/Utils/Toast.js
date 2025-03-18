@@ -7,7 +7,6 @@ const Toast = ({ children }) => {
   const toast = useSelector((store) => store.toast);
   const dispatch = useDispatch();
   var messageClass = "alert-info";
-   (toast + " in toast");
   useEffect(() => {
     if (toast?.message) {
       if (toast.messageType == "E") {
@@ -15,7 +14,7 @@ const Toast = ({ children }) => {
       } else if (toast.messageType == "S") {
         messageClass = "alert-success";
       }
-       (messageClass + " " + toast?.messageType);
+      messageClass + " " + toast?.messageType;
       setError({ message: toast.message, messageType: toast.messageType });
       const timer = setTimeout(() => {
         setError("");

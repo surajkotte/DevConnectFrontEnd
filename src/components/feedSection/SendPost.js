@@ -4,15 +4,15 @@ import { useSelector } from "react-redux";
 import { addToast } from "../../reduxSlice/ToastSlice";
 import { SendModal } from "./SendModal";
 import { Button } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { showLoader, hideLoader } from "../../reduxSlice/loaderSlice";
 import { addToast } from "../../reduxSlice/ToastSlice";
 
 const SendPost = ({ modalKey, setActionFalse, loginUserId }) => {
-  const modal = useSelector((store) => store.modal);
   const [connections, setConnections] = useState([]);
   const [selectedConnections, setSelectedConnections] = useState([]);
   const [selectedAll, setSelectedAll] = useState(false);
+  const loader = useSelector((store) => store.loader);
   const dispatch = useDispatch();
   const fetchConnections = async () => {
     try {
@@ -55,11 +55,29 @@ const SendPost = ({ modalKey, setActionFalse, loginUserId }) => {
       );
       const responseData = await response.json();
       if (responseData?.messageType == "S") {
-        addToast({ messageType: "S", message: responseData?.message });
-        setActionFalse();
+        dispatch(addToast({ messageType: "S", message: "Post Sent" }));
+        const response = await fetch(
+          `http://localhost:3000/post/send/notification/${feedId}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              from: loginUserId,
+              to: selectedConnections,
+              actionType: "post",
+            }),
+            credentials: "include",
+          }
+        );
+        const responseData = await response.json();
+        if (responseData?.messageType == "S") {
+          setActionFalse();
+        }
       }
     } catch (error) {
-      addToast({ messageType: "E", message: error.message });
+      dispatch(addToast({ messageType: "E", message: error.message }));
     } finally {
       dispatch(hideLoader());
     }
@@ -67,7 +85,7 @@ const SendPost = ({ modalKey, setActionFalse, loginUserId }) => {
   useEffect(() => {
     fetchConnections();
   }, []);
-  return (
+  return !loader?.isLoading ? (
     <div>
       <Modal
         uniqueKey={modalKey}
@@ -76,18 +94,19 @@ const SendPost = ({ modalKey, setActionFalse, loginUserId }) => {
         title={"Send Post"}
         onOutsideClick={setActionFalse}
       >
-        {connections && connections?.length != 0 ? (
+        {!loader?.isLoading && connections && connections?.length != 0 ? (
           <div className="flex flex-col gap-2">
             {connections.map((connection, index) => {
               return (
-                <>
+                <div key={index + "sendModal" + connection._id}>
                   <div className="w-full border-[1px] h-[1px]"></div>
                   <SendModal
+                    key={index + "sendModal" + connection._id}
                     Name={connection?.firstName + " " + connection?.lastName}
                     photo={connection?.photoURL}
                     designation={connection?.designation}
                     selectedConnections={selectedConnections.find(
-                      (item) => item._id == connection._id
+                      (item) => item == connection?._id
                     )}
                     setSelectedConnections={(flag) => {
                       if (flag) {
@@ -97,12 +116,12 @@ const SendPost = ({ modalKey, setActionFalse, loginUserId }) => {
                         ]);
                       } else {
                         setSelectedConnections((prev) =>
-                          prev.filter((item) => item._id != connection._id)
+                          prev.filter((item) => item != connection._id)
                         );
                       }
                     }}
                   />
-                </>
+                </div>
               );
             })}
           </div>
@@ -120,7 +139,7 @@ const SendPost = ({ modalKey, setActionFalse, loginUserId }) => {
             onClick={() => {
               if (!selectedAll) {
                 connections.map((connection) => {
-                  setSelectedConnections((prev) => [...prev, connection._id]);
+                  setSelectedConnections((prev) => [...prev, connection?._id]);
                 });
               } else {
                 setSelectedConnections([]);
@@ -141,7 +160,7 @@ const SendPost = ({ modalKey, setActionFalse, loginUserId }) => {
         </div>
       </Modal>
     </div>
-  );
+  ) : null;
 };
 
 export default SendPost;

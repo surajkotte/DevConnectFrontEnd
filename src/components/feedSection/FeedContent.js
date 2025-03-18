@@ -292,7 +292,10 @@ const FeedContent = ({
           {
             return (
               <div className="p-2" key={index + " commentsInfo"}>
-                <FeedComments commentInfo={data?.comment} />
+                <FeedComments
+                  key={index + "feedComments" + data?.id}
+                  commentInfo={data?.comment}
+                />
               </div>
             );
           }

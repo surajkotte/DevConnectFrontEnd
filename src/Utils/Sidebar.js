@@ -73,8 +73,13 @@ const Sidebar = ({ children }) => {
   const icons = [
     { icon: <HomeOutlined style={{ fontSize: "28px" }} />, link: "/dashboard" },
     {
-      icon: <NotificationsNoneOutlinedIcon style={{ fontSize: "32px" }} />,
-      link: "",
+      icon: (
+        <>
+          <NotificationsNoneOutlinedIcon style={{ fontSize: "32px" }} />
+          <span className="absolute -top-1 -right-2 bg-red-500 text-white rounded-full w-3 h-3 flex items-center justify-center"></span>
+        </>
+      ),
+      link: "/notifications",
     },
     { icon: <MessageOutlined style={{ fontSize: "28px" }} />, link: "/chat" },
     {

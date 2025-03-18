@@ -9,6 +9,7 @@ const MessageScreen = ({ userData }) => {
   const [messagesData, setMessagesData] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
   const user = useSelector((store) => store.user);
+  const loader = useSelector((store) => store.loader);
   const dispatch = useDispatch();
   const { photoURL, firstName, lastName, connectionId, _id } = userData?.info;
   const fetchChat = async () => {
@@ -74,7 +75,7 @@ const MessageScreen = ({ userData }) => {
     setMessagesData([]);
     fetchChat();
   }, [userData]);
-  return (
+  return !loader?.isLoading ? (
     <div className="flex flex-col w-full h-full gap-2 max-h-[726px]">
       <div className="flex w-full h-20 justify-center gap-4 border-b-[1px]">
         <div className="flex avatar justify-center items-center p-3">
@@ -144,7 +145,7 @@ const MessageScreen = ({ userData }) => {
         </div>
       </div>
     </div>
-  );
+  ) : null;
 };
 
 export default MessageScreen;

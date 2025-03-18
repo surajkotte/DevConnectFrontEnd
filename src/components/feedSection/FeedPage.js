@@ -22,6 +22,7 @@ import FeedContent from "./FeedContent";
 const FeedPage = ({ user }) => {
   const [selectedAction, setSelectedAction] = useState("");
   const [feedData, setFeedData] = useState("");
+  const loader = useSelector((store) => store.loader);
   const buttonsArray = [
     {
       name: "Photo",
@@ -211,11 +212,11 @@ const FeedPage = ({ user }) => {
             </>
           );
         })
-      ) : (
+      ) : !loader.isLoading ? (
         <div className="w-full h-full flex justify-center items-center">
           No Feed available
         </div>
-      )}
+      ) : null}
     </div>
   );
 };
