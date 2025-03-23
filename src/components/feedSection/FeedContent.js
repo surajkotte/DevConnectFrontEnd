@@ -82,27 +82,22 @@ const FeedContent = ({
     setCommentData(commentsData);
   }, [feedObject, feedId, feedEngagement]);
   return (
-    <div className="w-full max-w-xl bg-white border border-gray-300 rounded-xl shadow-lg">
+    <div className="w-full max-w-xl bg-gradient-to-r from-gray-900 to-gray-800 p-4 rounded-xl shadow-2xl border border-gray-700 backdrop-blur-md bg-opacity-60">
       <div className="flex items-center gap-3 p-2 ">
-        <div className="w-12 h-12 rounded-full overflow-hidden">
-          <img
-            src={
-              user?.photoURL ||
-              "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-            }
-            className="w-full h-full object-cover"
-          />
-        </div>
-        <div className="text-center md:text-left">
-          <h1 className="font-bold">
+        <img
+          src={user?.photoURL || "https://via.placeholder.com/48"}
+          className="w-12 h-12 rounded-full border border-gray-500"
+        />
+        <div>
+          <h1 className="text-xl font-bold text-cyan-400">
             {user.firstName} {user.lastName}
           </h1>
-          <p className="font-medium">{"Software Engineer"}</p>
+          <p className="text-sm text-gray-400">Software Engineer</p>
         </div>
       </div>
       <div className="flex p-2">
         <p
-          className={`text-gray-700 ${
+          className={`text-gray-300 ${
             isExpanded
               ? ""
               : `${
@@ -152,14 +147,14 @@ const FeedContent = ({
           ></video>
         ) : null}
       </div>
-      <div className="flex justify-between p-4 text-sm text-gray-600 border-t border-gray-200">
+      <div className="flex justify-between text-gray-400 text-sm mt-3 border-t border-gray-700 pt-3">
         <div className="flex gap-2">
           <span>{actionClicked.likeCount} likes</span>
           <span>{actionClicked.dislikeCount} Dislikes</span>
         </div>
         <span>{actionClicked?.commentCount + " "} Comments</span>
       </div>
-      <div className="flex justify-around py-3 border-t border-gray-200">
+      <div className="flex justify-around py-3 border-t mt-3 border-gray-700">
         <button
           onClick={() => {
             setActionClicked((prev) => ({

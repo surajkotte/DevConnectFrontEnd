@@ -76,12 +76,18 @@ const FeedPage = ({ user }) => {
     fetchFeedContent();
   }, [user]);
   return (
-    <div className="flex flex-col items-center w-full h-full gap-5 overflow-y-auto max-h-screen">
+    <div className="flex flex-col items-center w-full h-full gap-5 overflow-y-auto max-h-screen bg-gradient-to-r from-gray-900 to-gray-800 border-gray-700 backdrop-blur-md bg-opacity-60">
       <Card
-        className="w-full max-w-xl p-4 bg-white border border-gray-300 shadow-lg rounded-xl mt-2"
-        style={{ minHeight: "130px" }}
+        className="w-full max-w-xl p-4 border shadow-lg rounded-xl mt-2"
+        style={{
+          minHeight: "130px",
+          background: "linear-gradient(to right, #111827, #1f2937)",
+          border: "1px solid #374151",
+          backdropFilter: "blur(10px)",
+          backgroundColor: "rgba(17, 24, 39, 0.6)",
+        }}
       >
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 ">
           <div className="w-12 h-12 rounded-full overflow-hidden">
             <img
               src={
@@ -110,6 +116,7 @@ const FeedPage = ({ user }) => {
               <MediaModals
                 mediaType={selectedAction}
                 updateFeedContent={updateFeed}
+                className="bg-gray-700"
               />
             ) : (
               <TextModal

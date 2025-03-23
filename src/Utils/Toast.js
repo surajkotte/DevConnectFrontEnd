@@ -26,7 +26,7 @@ const Toast = ({ children }) => {
   return (
     <>
       {error.message && (
-        <div className="toast toast-top toast-center">
+        <div className="toast toast-top toast-center z-10">
           <div
             className={`alert ${
               error.messageType === "S"

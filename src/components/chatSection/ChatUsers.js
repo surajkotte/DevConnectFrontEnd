@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import UserCard from "./UserCard";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import MessageScreen from "./MessageScreen";
+import { Card } from "@mui/material";
+import { Video, Phone, Image, Pin } from "lucide-react";
 const ChatUsers = () => {
   const [userInfo, setUserInfo] = useState([]);
   const [selectedUser, setSelectedUser] = useState("");
@@ -88,6 +90,53 @@ const ChatUsers = () => {
           </span>
         )}
       </div>
+      {selectedUser && (
+        <div className="flex ">
+          <div className="max-w-sm bg-gradient-to-r from-gray-900 to-gray-800 border border-gray-700 backdrop-blur-md bg-opacity-60 rounded-2xl p-6 text-white shadow-lg">
+            {/* User Info */}
+            <div className="flex flex-col items-center">
+              <img
+                src={selectedUser?.info?.photoURL}
+                alt="User Avatar"
+                className="w-24 h-24 rounded-full border-2 border-gray-500"
+              />
+              <h2 className="text-xl font-semibold mt-3">
+                {selectedUser?.info?.firstName +
+                  " " +
+                  selectedUser?.info?.lastName}
+              </h2>
+              <p className="text-gray-400 text-sm">
+                {selectedUser?.info?.designation}
+              </p>
+            </div>
+            <div className="flex justify-around mt-6 gap-2">
+              <button className="flex items-center gap-2 px-4 py-2 bg-gray-700 rounded-xl hover:bg-gray-600 transition">
+                <Phone size={20} />
+              </button>
+              <button className="flex items-center gap-2 px-4 py-2 bg-gray-700 rounded-xl hover:bg-gray-600 transition">
+                <Video size={20} />
+              </button>
+              <button className="flex items-center gap-2 px-4 py-2 bg-gray-700 rounded-xl hover:bg-gray-600 transition">
+                <Pin size={20} />
+              </button>
+            </div>
+            <div className="mt-6">
+              <h3 className="text-lg font-semibold">Media</h3>
+              <div className="grid grid-cols-3 gap-2 mt-2">
+                <div className="w-16 h-16 bg-gray-700 rounded-lg flex items-center justify-center">
+                  <Image size={24} />
+                </div>
+                <div className="w-16 h-16 bg-gray-700 rounded-lg flex items-center justify-center">
+                  <Image size={24} />
+                </div>
+                <div className="w-16 h-16 bg-gray-700 rounded-lg flex items-center justify-center">
+                  <Image size={24} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

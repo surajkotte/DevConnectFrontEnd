@@ -20,28 +20,29 @@ const Notifications = () => {
         credentials: "include",
       });
       const responseData = await response.json();
-      console.log(responseData);
-      setData(responseData?.data);
+      if (responseData?.messageType == "S") {
+        console.log(responseData?.data);
+        setData(responseData?.data);
+      }
     } catch (err) {
-      dispatch(
-        addToast({ messageType: "E", message: "Error while fetching data" })
-      );
+      dispatch(addToast({ messageType: "E", message: err.message }));
     }
   };
   useEffect(() => {
     fetchNotifications();
   }, []);
   return !notificationLoading.isLoading ? (
-    <div className="w-[70%] flex flex-col h-full gap-3">
+    <div className="w-[70%] flex flex-col h-full gap-5">
       {console.log(data)}
       {data && data.length != 0 ? (
         data.notifications.map((element) => {
           return (
             <NotificationComp
-              Name={element.from.firstName + " " + element.from.lastName}
-              photo={element.from.photoURL}
-              actionType={element.actionType}
-              isRead={element.isRead}
+              Name={element?.from?.firstName + " " + element?.from?.lastName}
+              photo={element?.from?.photoURL}
+              actionType={element?.actionType}
+              isRead={element?.isRead}
+              content={element?.post?.feedContent}
             />
           );
         })
