@@ -32,7 +32,7 @@ const Notifications = () => {
     fetchNotifications();
   }, []);
   return !notificationLoading.isLoading ? (
-    <div className="w-[70%] flex flex-col h-full gap-5">
+    <div className="w-[70%] flex flex-col h-full gap-5 pt-3">
       {console.log(data)}
       {data && data.length != 0 ? (
         data.notifications.map((element) => {
@@ -43,6 +43,7 @@ const Notifications = () => {
               actionType={element?.actionType}
               isRead={element?.isRead}
               content={element?.post?.feedContent}
+              postId={element?.post?._id}
             />
           );
         })

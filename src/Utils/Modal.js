@@ -12,6 +12,7 @@ export default function Modal({
   title,
   closeOnOutsideClick,
   onOutsideClick,
+  style,
 }) {
   const modal = useSelector((store) => store.modal);
   const dispatch = useDispatch();
@@ -32,7 +33,7 @@ export default function Modal({
     >
       {title && <DialogTitle>{title}</DialogTitle>}
       {/* <DialogContent style={{ backgroundColor: "#0f1114" }}> */}
-      <DialogContent>{children}</DialogContent>
+      <DialogContent className={style}>{children}</DialogContent>
     </Dialog>
   );
 }

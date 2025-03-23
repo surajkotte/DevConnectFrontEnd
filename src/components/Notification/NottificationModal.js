@@ -1,151 +1,37 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
-import { SlLike, SlDislike, SlBubble, SlCursor } from "react-icons/sl";
-import { CiFaceSmile } from "react-icons/ci";
-import FeedComments from "./FeedComments";
-import SendPost from "./SendPost";
-import { useDispatch } from "react-redux";
-import { openModal } from "../../reduxSlice/modalSlice";
-const FeedContent = ({
-  user,
-  loginUser,
-  feedObject,
-  feedId,
-  mediaType,
-  feedEngagement,
-}) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [commentText, setCommentText] = useState("");
-  const dispatch = useDispatch();
-  const [actionClicked, setActionClicked] = useState({
-    likeClicked: false,
-    likeCount: 0,
-    dislikeClicked: false,
-    dislikeCount: 0,
-    commentsClicked: false,
-    commentCount: 0,
-    sendClicked: false,
-  });
-  const [commentData, setCommentData] = useState("");
-  const text = feedObject?.contentText;
-  const mediaUrl = feedObject?.contentURL;
-  const likeAction = async (action) => {
-    try {
-      const url = `http://localhost:3000/feed/${action}/${feedId}`;
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId: loginUser?._id, comments: commentText }),
-        credentials: "include",
-      });
-      const responseData = await response.json();
-      if (responseData?.messageType == "S" && action == "comment") {
-        setCommentText("");
-      }
-    } catch (err) {
-    } finally {
-    }
-  };
-  useEffect(() => {
-    const isLikeClicked = feedEngagement?.data?.like.find(
-      (info) => info.userId._id.toString() == loginUser?._id
-    );
-    const isDisLikeClicked = feedEngagement?.data?.dislike.find(
-      (info) => info.userId._id.toString() == loginUser?._id
-    );
-    setActionClicked((prev) => ({
-      ...prev,
-      likeCount: feedEngagement?.data ? feedEngagement?.data?.likeCount : 0,
-      dislikeCount: feedEngagement?.data
-        ? feedEngagement?.data?.dislikeCount
-        : 0,
-      commentCount: feedEngagement?.data
-        ? feedEngagement?.data?.commentCount
-        : 0,
-      likeClicked: isLikeClicked ? true : false,
-      dislikeClicked: isDisLikeClicked ? true : false,
-    }));
-    const commentsData = feedEngagement?.data?.comments?.map((commentInfo) => {
-      return {
-        comment: {
-          commentText: commentInfo?.comment?.commentText,
-          createdTime: commentInfo?.comment?.createdAt,
-          userId: commentInfo?.comment?.userId,
-        },
-        reply: commentInfo?.reply,
-      };
-    });
-    setCommentData(commentsData);
-  }, [feedObject, feedId, feedEngagement]);
+import React from "react";
+
+const NottificationModal = ({ postId, content, Name, photo }) => {
   return (
-    <div className="w-full max-w-xl bg-gradient-to-r from-gray-900 to-gray-800 p-4 rounded-xl shadow-2xl border border-gray-700 backdrop-blur-md bg-opacity-60">
-      <div className="flex items-center gap-3 p-2 ">
+    <div className="w-full bg-gradient-to-r from-gray-900 to-gray-800 rounded-xl shadow-2xl border border-gray-700 backdrop-blur-md bg-opacity-60 items-center justify-center">
+      <div className="flex items-center gap-3 p-2  justify-center">
         <img
-          src={user?.photoURL || "https://via.placeholder.com/48"}
+          src={photo || "https://via.placeholder.com/48"}
           className="w-12 h-12 rounded-full border border-gray-500"
         />
         <div>
-          <h1 className="text-xl font-bold text-cyan-400">
-            {user.firstName} {user.lastName}
-          </h1>
+          <h1 className="text-xl font-bold text-cyan-400">{Name}</h1>
           <p className="text-sm text-gray-400">Software Engineer</p>
         </div>
       </div>
       <div className="flex p-2">
-        <p
-          className={`text-gray-300 ${
-            isExpanded
-              ? ""
-              : `${
-                  mediaType == "Image" || mediaType == "Video"
-                    ? "line-clamp-3 overflow-hidden"
-                    : ""
-                }`
-          } transition-all`}
-        >
-          {mediaType == "Image" || mediaType == "Video" ? (
-            <>
-              {isExpanded ? text : `${text?.slice(0, 190)}...`}
-              {!isExpanded && text?.length > 200 && (
-                <button
-                  onClick={() => setIsExpanded(true)}
-                  className="text-blue-500 hover:underline inline"
-                >
-                  Read More
-                </button>
-              )}
-            </>
-          ) : (
-            <div dangerouslySetInnerHTML={{ __html: text }}></div>
-          )}
+        <p className="text-gray-300 line-clamp-3 overflow-hidden transition-all">
+          <div dangerouslySetInnerHTML={{ __html: content?.contentText }}></div>
         </p>
       </div>
-      <div className="flex">
-        {mediaType == "Image" ? (
+      <div className="flex justify-center items-end">
+        {content?.contentURL && (
           <img
             src={`${
-              mediaUrl
-                ? mediaUrl
+              content?.contentURL
+                ? content?.contentURL
                 : "https://learning.sap-press.com/hs-fs/hubfs/image-png-Aug-29-2024-02-31-27-0426-PM.png?width=992&height=861&name=image-png-Aug-29-2024-02-31-27-0426-PM.png"
             }`}
-            className="p-2"
+            className="p-2 justify-center items-center"
             loading="lazy"
           ></img>
-        ) : mediaType == "Video" ? (
-          <video
-            src={`${
-              mediaUrl
-                ? mediaUrl
-                : "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample"
-            }`}
-            className="p-2"
-            controls
-          ></video>
-        ) : null}
+        )}
       </div>
-      <div className="flex justify-between text-gray-400 text-sm mt-3 border-t border-gray-700 pt-3">
+      {/* <div className="flex justify-between text-gray-400 text-sm mt-3 border-t border-gray-700 pt-3">
         <div className="flex gap-2">
           <span>{actionClicked.likeCount} likes</span>
           <span>{actionClicked.dislikeCount} Dislikes</span>
@@ -292,22 +178,9 @@ const FeedContent = ({
               </div>
             );
           }
-        })}
-      {actionClicked?.sendClicked && (
-        <SendPost
-          modalKey={`sendModal${feedId}`}
-          key={feedId}
-          loginUserId={user?._id}
-          setActionFalse={() => {
-            setActionClicked((prev) => ({
-              ...prev,
-              sendClicked: false,
-            }));
-          }}
-        />
-      )}
+        })} */}
     </div>
   );
 };
 
-export default FeedContent;
+export default NottificationModal;
